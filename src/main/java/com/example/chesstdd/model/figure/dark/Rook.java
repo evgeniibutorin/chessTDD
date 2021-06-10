@@ -16,14 +16,69 @@ public class Rook implements Figure {
 
     @Getter
     private int id;
+
     @Getter
     @Setter
     private int position;
+
     @Getter
     Color color;
 
-    public List<Integer> canMove(){
-        List<Integer> steps = Arrays.asList(1,2,3,4,5,6,7,8,16,24,32,40,48,56,-1,-2,-3,-4,-5,-6,-7,-8,-16,-24,-32,-40,-48,-56);
-        return steps;
+    @Getter
+    @Setter
+    private int widthPosition;
+
+    @Getter
+    @Setter
+    private int heightPosition;
+
+
+    List<List<Integer>> figureMoves = Arrays.asList(
+            Arrays.asList(0,1),
+            Arrays.asList(0,2),
+            Arrays.asList(0,3),
+            Arrays.asList(0,4),
+            Arrays.asList(0,5),
+            Arrays.asList(0,6),
+            Arrays.asList(0,7),
+            Arrays.asList(0,-1),
+            Arrays.asList(0,-2),
+            Arrays.asList(0,-3),
+            Arrays.asList(0,-4),
+            Arrays.asList(0,-5),
+            Arrays.asList(0,-6),
+            Arrays.asList(0,-7),
+            Arrays.asList(-1,0),
+            Arrays.asList(-2,0),
+            Arrays.asList(-3,0),
+            Arrays.asList(-4,0),
+            Arrays.asList(-5,0),
+            Arrays.asList(-6,0),
+            Arrays.asList(-7,0),
+            Arrays.asList(-1,0),
+            Arrays.asList(-2,0),
+            Arrays.asList(-3,0),
+            Arrays.asList(-4,0),
+            Arrays.asList(-5,0),
+            Arrays.asList(-6,0),
+            Arrays.asList(-7,0)
+    );
+
+    @Override
+    public List<List<Integer>> possibleMoves() {
+        return null;
+    }
+
+    @Override
+    public List<Integer> coordinatesForTheMove() {
+        return null;
+    }
+
+    public Rook(int id, int position, Color color, int widthPosition, int heightPosition) {
+        this.id = id;
+        this.position = position;
+        this.color = color;
+        this.widthPosition = widthPosition;
+        this.heightPosition = heightPosition;
     }
 }
