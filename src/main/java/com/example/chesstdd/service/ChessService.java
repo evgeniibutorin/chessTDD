@@ -20,7 +20,6 @@ public class ChessService {
     List<Tail> tails = setCoordinate(tailIdAndFigureIdCreator());
 
 
-
     public List<Tail> tailIdAndFigureIdCreator() {
         List<Tail> board = new ArrayList<>();
         for (int i = 0; i < 64; i++) {
@@ -38,13 +37,34 @@ public class ChessService {
         for (int i = 0; i < supplementedTileList.size(); i++) {
             int width = i;
             int height = 0;
-            if (i > 7 && i < 16){ height = 1; width = i-8;}
-            if (i > 15 && i < 24){ height = 2; width = i-16;}
-            if (i > 23 && i < 32){ height = 3;width = i-24;}
-            if (i > 31 && i < 40){ height = 4;width = i-32;}
-            if (i > 39 && i < 48){ height = 5;width = i-40;}
-            if (i > 47 && i < 56){ height = 6;width = i-48;}
-            if (i > 55 && i < 64){ height = 7;width = i-56;}
+            if (i > 7 && i < 16) {
+                height = 1;
+                width = i - 8;
+            }
+            if (i > 15 && i < 24) {
+                height = 2;
+                width = i - 16;
+            }
+            if (i > 23 && i < 32) {
+                height = 3;
+                width = i - 24;
+            }
+            if (i > 31 && i < 40) {
+                height = 4;
+                width = i - 32;
+            }
+            if (i > 39 && i < 48) {
+                height = 5;
+                width = i - 40;
+            }
+            if (i > 47 && i < 56) {
+                height = 6;
+                width = i - 48;
+            }
+            if (i > 55 && i < 64) {
+                height = 7;
+                width = i - 56;
+            }
             Tail tail = supplementedTileList.get(i);
             tail.setTailWidth(width);
             tail.setTailHeight(height);
@@ -54,63 +74,39 @@ public class ChessService {
 
     public List<Figure> createFigure() {
         List<Figure> board = new ArrayList<>();
-        board.add(new Rook(0,0,WHITE,0,1));
-        for (int i = 0; i < 64; i++) {
-            if (i == 0 || i == 7) {
-                int width = i;
-                int height = 0;
-                board.add(new Rook(i,i,WHITE,width,height));
-            } else if (i == 1 || i == 6) {
-                int width = i;
-                int height = 0;
-                board.add(new Knight(i,i,WHITE,width,height));
-            } else if (i == 2 || i == 5) {
-                int width = i;
-                int height = 0;
-                board.add(new Bishop(i,i,WHITE,width,height));
-            } else if (i == 3) {
-                board.add(new King(i,i,WHITE,3,0));
-            } else if (i == 4) {
-                board.add(new Pawn(i, i, WHITE,4,0));
-            } else if (i == 8 || i == 9 || i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15) {
-                int width = i;
-                int height = 1;
-                board.add(new Queen(i, i, WHITE,width,height));
-            } else if (i == 56 || i == 63) {
-                int width = i-56;
-                int height = 7;
-                board.add(new Rook(i, i, DARK,width,height));
-            } else if (i == 57 || i == 62) {
-                int width = i-56;
-                int height = 7;
-                board.add(new Knight(i, i, DARK,width,height));
-            } else if (i == 58 || i == 61) {
-                int width = i-56;
-                int height = 7;
-                board.add(new Bishop(i, i, DARK,width,height));
-            } else if (i == 59) {
-                board.add(new King(i, i, DARK,3,7));
-            } else if (i == 60) {
-                board.add(new Queen(i, i, DARK,4,7));
-            } else if (i == 48 || i == 49 || i == 50 || i == 51 || i == 52 || i == 53 || i == 54 || i == 55) {
-                int width = i -48;
-                int height = 6;
-                width++;
-                board.add(new Pawn(i, i, WHITE,width,height));
-
-            }
-            for (int q = 0; q<board.size();q++){
-
-            }
-
+        board.add(new Rook(0, 0, WHITE, 0, 0));
+        board.add(new Knight(1, 1, WHITE, 1, 0));
+        board.add(new Bishop(2, 2, WHITE, 2, 0));
+        board.add(new Queen(3, 3, WHITE, 3, 0));
+        board.add(new King(4, 4, WHITE, 4, 0));
+        board.add(new Bishop(5, 5, WHITE, 5, 0));
+        board.add(new Knight(6, 6, WHITE, 6, 0));
+        board.add(new Rook(7, 7, WHITE, 7, 0));
+        for (int i = 8; i < 16; i++) {
+            int width = i - 8;
+            int height = 1;
+            board.add(new Queen(i, i, WHITE, width, height));
         }
+        for (int j = 48; j < 58; j++) {
+            int width = j - 48;
+            int height = 6;
+            board.add(new Pawn(j, j, WHITE, width, height));
+        }
+        board.add(new Rook(56, 56, WHITE, 0, 7));
+        board.add(new Knight(57, 57, WHITE, 1, 7));
+        board.add(new Bishop(58, 58, WHITE, 2, 7));
+        board.add(new Queen(59, 59, WHITE, 3, 7));
+        board.add(new King(60, 60, WHITE, 4, 7));
+        board.add(new Bishop(61, 61, WHITE, 5, 7));
+        board.add(new Knight(62, 62, WHITE, 6, 7));
+        board.add(new Rook(63, 63, WHITE, 7, 7));
         return board;
     }
 
-    public List<Tail> getTailsWithoutBlackFigure(List<Tail> tailsWithAllFigures){
+    public List<Tail> getTailsWithoutBlackFigure(List<Tail> tailsWithAllFigures) {
         List<Tail> tailsWithoutBlackFigure = new ArrayList<>();
-        for (Tail tail:tailsWithAllFigures){
-            if (tail.getFigure()==null || tail.getFigure().getId()<48){
+        for (Tail tail : tailsWithAllFigures) {
+            if (tail.getFigure() == null || tail.getFigure().getId() < 48) {
                 tailsWithoutBlackFigure.add(tail);
             }
         }
@@ -154,8 +150,7 @@ public class ChessService {
         if (tern % 2 == 0) {
             list = getWhiteFigures(figures);
             figure = list.get(random.nextInt(list.size()));
-        }
-        else {
+        } else {
             list = getBlackFigures(figures);
             figure = list.get(random.nextInt(list.size()));
         }
@@ -165,8 +160,11 @@ public class ChessService {
     public void move(List<Tail> tails) {
         Figure figure = getRandomFigure();
         List<Tail> bordWithoutTailWithoutSimilarColorFigures;
-        if (tern % 2 == 0) { bordWithoutTailWithoutSimilarColorFigures = getTailsWithoutWhiteFigure(tails);}
-        else { bordWithoutTailWithoutSimilarColorFigures = getTailsWithoutBlackFigure(tails);}
+        if (tern % 2 == 0) {
+            bordWithoutTailWithoutSimilarColorFigures = getTailsWithoutWhiteFigure(tails);
+        } else {
+            bordWithoutTailWithoutSimilarColorFigures = getTailsWithoutBlackFigure(tails);
+        }
         tern++;
         List<List<Integer>> moves = figure.possibleMoves();
 
