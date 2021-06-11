@@ -15,7 +15,8 @@ public interface Figure {
     int getWidthPosition();
     void setWidthPosition(int i);
     List<Tail> possibleMoves(List<Tail> tails);
-    List<Integer> coordinateForTheMove(Figure figure);
+    List<Integer> coordinateForTheMove();
+    List<Tail> getTailsToMove();
 
 
 }

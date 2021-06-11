@@ -114,6 +114,7 @@ public class ChessService {
         return tailsWithoutBlackFigure;
     }
 
+
     public List<Tail> getTailsWithoutWhiteFigure(List<Tail> tailsWithAllFigures) {
         List<Tail> tailsWithoutWhiteFigure = new ArrayList<>();
         for (Tail tail : tailsWithAllFigures) {
@@ -148,16 +149,17 @@ public class ChessService {
      * @param figures result getBlackFigures() or getWhiteFigures()
      * @return List of figures that can move.
      */
-    public List<Figure> canMoveFigures(List<Figure> figures){
+    public List<Figure> canMoveFigures(List<Figure> figures) {
         List<Figure> canMove = new ArrayList<>();
         List<Tail> tailsToCheck;
-        if (tern % 2 == 0){
+        if (tern % 2 == 0) {
             tailsToCheck = getTailsWithoutWhiteFigure(tails);
+        } else {
+            tailsToCheck = getTailsWithoutBlackFigure(tails);
         }
-        else{ tailsToCheck = getTailsWithoutBlackFigure(tails);}
 
-        for (Figure figure:figures){
-            if (!(figure.possibleMoves(tailsToCheck).size()==0)){
+        for (Figure figure : figures) {
+            if (!(figure.possibleMoves(tailsToCheck).size() == 0)) {
                 canMove.add(figure);
             }
         }
@@ -175,32 +177,41 @@ public class ChessService {
     }
 
 
-
-
     public void move(Figure movingFigure) {
         List<Figure> figureWithOneColor;
-//        List<Tail> bordWithoutTailWithSimilarFigureColor;
-        if (tern % 2 == 0){
+        if (tern % 2 == 0) {
             figureWithOneColor = getWhiteFigures(figures);
-//            bordWithoutTailWithSimilarFigureColor = getTailsWithoutWhiteFigure(tails);
-        }
-        else{
+        } else {
             figureWithOneColor = getBlackFigures(figures);
-//            bordWithoutTailWithSimilarFigureColor = getTailsWithoutBlackFigure(tails);
         }
 
-        //рандомная фигура из числа тех кто может ходить в свой ход(в )
+        //рандомная фигура из числа тех кто может ходить в свой ход(в)
         Figure randomFigure = getRandomFigure(canMoveFigures(figureWithOneColor));
-//        randomFigure.tailForTheMove(bordWithoutTailWithSimilarFigureColor);
-
-        randomFigure.coordinateForTheMove()
-
-
+        List<Integer> goalCoordinate = randomFigure.coordinateForTheMove();
+        for (Tail tail : tails) {
+            if (tail.getTailWidth() == goalCoordinate.get(0) && tail.getTailHeight() == goalCoordinate.get(1)) {
+                Figure oldFigure = tail.getFigure();
+                if (oldFigure!=null) {
+                    for (Figure figure : figures) {
+                        if (figure.getId() == oldFigure.getId()){
+                            tail.setFigure(null);
+                        }
+                    }
+                }
+                figures.remove(oldFigure);
+                tail.setFigure(randomFigure);
+                break;
+            }
         }
-//        List<List<Integer>> moves = figure.possibleMoves();
 
+    }
 
+    public List<Tail> restarterGane(){
+        Retern
     }
 
 
 }
+
+
+
