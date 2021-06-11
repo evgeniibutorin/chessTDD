@@ -1,6 +1,7 @@
 package com.example.chesstdd.model.figure.dark;
 
 import com.example.chesstdd.model.Color;
+import com.example.chesstdd.model.Tail;
 import com.example.chesstdd.model.figure.Figure;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -65,14 +67,27 @@ public class Bishop implements Figure {
             Arrays.asList(-7,-7)
     );
 
-    @Override
-    public List<List<Integer>> possibleMoves() {
-        return null;
+    public List<Tail> possibleMoves(List<Tail> tails) {
+        List<Tail> possibleTalesForMove = new ArrayList<>();
+        for (int i = 0; i < figureMoves.size(); i++) {
+            List<Integer> move = figureMoves.get(i);
+            int newWidth = widthPosition+move.get(0);
+            int newHeight = heightPosition+move.get(1);
+            for (Tail tail:tails){
+                if (tail.getTailWidth()==newWidth&&tail.getTailHeight()==newHeight){
+                    possibleTalesForMove.add(tail);
+                }
+            }
+        }
+
+        return possibleTalesForMove;
     }
 
-    @Override
-    public List<Integer> coordinatesForTheMove() {
-        return null;
+    public Tail tailForTheMove(List<Tail> tails){
+        List<Tail> possibleMoves = possibleMoves(tails);
+        Random rand = new Random();
+        Tail move = possibleMoves.get(rand.nextInt(possibleMoves.size()));
+        return move;
     }
 
     public Bishop(int id, int position, Color color, int widthPosition, int heightPosition) {

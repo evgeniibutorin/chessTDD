@@ -1,6 +1,7 @@
 package com.example.chesstdd.model.figure.dark;
 
 import com.example.chesstdd.model.Color;
+import com.example.chesstdd.model.Tail;
 import com.example.chesstdd.model.figure.Figure;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -80,14 +81,27 @@ public class Pawn implements Figure {
 
 
 
-    @Override
-    public List<List<Integer>> possibleMoves() {
-        return null;
+    public List<Tail> possibleMoves(List<Tail> tails) {
+        List<Tail> possibleTalesForMove = new ArrayList<>();
+        for (int i = 0; i < figureMoves.size(); i++) {
+            List<Integer> move = figureMoves.get(i);
+            int newWidth = widthPosition+move.get(0);
+            int newHeight = heightPosition+move.get(1);
+            for (Tail tail:tails){
+                if (tail.getTailWidth()==newWidth&&tail.getTailHeight()==newHeight){
+                    possibleTalesForMove.add(tail);
+                }
+            }
+        }
+
+        return possibleTalesForMove;
     }
 
-    @Override
-    public List<Integer> coordinatesForTheMove() {
-        return null;
+    public Tail tailForTheMove(List<Tail> tails){
+        List<Tail> possibleMoves = possibleMoves(tails);
+        Random rand = new Random();
+        Tail move = possibleMoves.get(rand.nextInt(possibleMoves.size()));
+        return move;
     }
 
     public Pawn(int id, int position, Color color, int widthPosition, int heightPosition) {

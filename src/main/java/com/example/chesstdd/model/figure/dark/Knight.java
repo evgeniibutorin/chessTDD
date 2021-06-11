@@ -1,6 +1,7 @@
 package com.example.chesstdd.model.figure.dark;
 
 import com.example.chesstdd.model.Color;
+import com.example.chesstdd.model.Tail;
 import com.example.chesstdd.model.figure.Figure;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +35,6 @@ public class Knight implements Figure {
     @Setter
     private int heightPosition;
 
-
     List<List<Integer>> figureMoves = Arrays.asList(
             Arrays.asList(-2, 1),
             Arrays.asList(-1,2),
@@ -45,25 +45,47 @@ public class Knight implements Figure {
             Arrays.asList(-1,-2),
             Arrays.asList(-2,-1));
 
-    public  List<List<Integer>> possibleMoves() {
-        List<List<Integer>> possibleMoves = new ArrayList<>();
+
+    /**
+     * @param tails - tails minus tails with figures of the same color.
+     * @return
+     */
+    public List<Tail> possibleMoves(List<Tail> tails) {
+        List<Tail> possibleTalesForMove = new ArrayList<>();
         for (int i = 0; i < figureMoves.size(); i++) {
             List<Integer> move = figureMoves.get(i);
-            //todo: add method to check that tail is free
-                if ((widthPosition+move.get(0)>=0)&&(widthPosition+move.get(0)<8)
-                        &&(heightPosition+move.get(1)>=0)&&(heightPosition+move.get(1)<8)){
-                    possibleMoves.add(move);
+            int newWidth = widthPosition + move.get(0);
+            int newHeight = heightPosition + move.get(1);
+            for (Tail tail : tails) {
+                if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight) {
+                    possibleTalesForMove.add(tail);
+                    break;
+                }
             }
-
         }
-        return possibleMoves;
+        return possibleTalesForMove;
     }
 
-    public List<Integer> coordinatesForTheMove(){
-        List<List<Integer>> possibleMoves = possibleMoves();
-        Random rand = new Random();
-        List<Integer> move = possibleMoves.get(rand.nextInt(possibleMoves.size()));
-        return move;
+
+    /**
+     * Change figure coordinate
+     * @param tail - target tails to move
+     */
+    public List<Integer> coordinateForTheMove(Figure figure) {
+        int coordinateForNewWidth = 0;
+        int newcoordinateForNewHeight = 0;
+        for (int i = 0; i < figureMoves.size(); i++) {
+            List<Integer> move = figureMoves.get(i);
+            int newWidth = widthPosition + move.get(0);
+            coordinateForNewWidth = newWidth;
+            int newHeight = heightPosition + move.get(1);
+            newcoordinateForNewHeight = newHeight;
+            if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight) {
+                this.widthPosition = newWidth;
+                this.heightPosition = newHeight; }
+        }
+        List<Integer> newCoordinate = Arrays.asList(coordinateForNewWidth, newcoordinateForNewHeight);
+        return newCoordinate;
     }
 
     public Knight(int id, int position, Color color, int widthPosition, int heightPosition) {

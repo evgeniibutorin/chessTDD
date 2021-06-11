@@ -8,6 +8,7 @@ import com.example.chesstdd.model.figure.dark.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
 
 import static com.example.chesstdd.model.Color.DARK;
 import static com.example.chesstdd.model.Color.WHITE;
@@ -90,16 +91,16 @@ public class ChessService {
         for (int j = 48; j < 58; j++) {
             int width = j - 48;
             int height = 6;
-            board.add(new Pawn(j, j, WHITE, width, height));
+            board.add(new Pawn(j, j, DARK, width, height));
         }
-        board.add(new Rook(56, 56, WHITE, 0, 7));
-        board.add(new Knight(57, 57, WHITE, 1, 7));
-        board.add(new Bishop(58, 58, WHITE, 2, 7));
-        board.add(new Queen(59, 59, WHITE, 3, 7));
-        board.add(new King(60, 60, WHITE, 4, 7));
-        board.add(new Bishop(61, 61, WHITE, 5, 7));
-        board.add(new Knight(62, 62, WHITE, 6, 7));
-        board.add(new Rook(63, 63, WHITE, 7, 7));
+        board.add(new Rook(56, 56, DARK, 0, 7));
+        board.add(new Knight(57, 57, DARK, 1, 7));
+        board.add(new Bishop(58, 58, DARK, 2, 7));
+        board.add(new Queen(59, 59, DARK, 3, 7));
+        board.add(new King(60, 60, DARK, 4, 7));
+        board.add(new Bishop(61, 61, DARK, 5, 7));
+        board.add(new Knight(62, 62, DARK, 6, 7));
+        board.add(new Rook(63, 63, DARK, 7, 7));
         return board;
     }
 
@@ -143,30 +144,60 @@ public class ChessService {
         return blackFigures;
     }
 
-    public Figure getRandomFigure() {
-        Random random = new Random();
-        List<Figure> list;
-        Figure figure;
-        if (tern % 2 == 0) {
-            list = getWhiteFigures(figures);
-            figure = list.get(random.nextInt(list.size()));
-        } else {
-            list = getBlackFigures(figures);
-            figure = list.get(random.nextInt(list.size()));
+    /**
+     * @param figures result getBlackFigures() or getWhiteFigures()
+     * @return List of figures that can move.
+     */
+    public List<Figure> canMoveFigures(List<Figure> figures){
+        List<Figure> canMove = new ArrayList<>();
+        List<Tail> tailsToCheck;
+        if (tern % 2 == 0){
+            tailsToCheck = getTailsWithoutWhiteFigure(tails);
         }
+        else{ tailsToCheck = getTailsWithoutBlackFigure(tails);}
+
+        for (Figure figure:figures){
+            if (!(figure.possibleMoves(tailsToCheck).size()==0)){
+                canMove.add(figure);
+            }
+        }
+        return canMove;
+    }
+
+    /**
+     * @param listFiguresThatCanMove result canMoveFigures()
+     * @return random figure
+     */
+    public Figure getRandomFigure(List<Figure> listFiguresThatCanMove) {
+        Random random = new Random();
+        Figure figure = listFiguresThatCanMove.get(random.nextInt(listFiguresThatCanMove.size()));
         return figure;
     }
 
-    public void move(List<Tail> tails) {
-        Figure figure = getRandomFigure();
-        List<Tail> bordWithoutTailWithoutSimilarColorFigures;
-        if (tern % 2 == 0) {
-            bordWithoutTailWithoutSimilarColorFigures = getTailsWithoutWhiteFigure(tails);
-        } else {
-            bordWithoutTailWithoutSimilarColorFigures = getTailsWithoutBlackFigure(tails);
+
+
+
+    public void move(Figure movingFigure) {
+        List<Figure> figureWithOneColor;
+//        List<Tail> bordWithoutTailWithSimilarFigureColor;
+        if (tern % 2 == 0){
+            figureWithOneColor = getWhiteFigures(figures);
+//            bordWithoutTailWithSimilarFigureColor = getTailsWithoutWhiteFigure(tails);
         }
-        tern++;
-        List<List<Integer>> moves = figure.possibleMoves();
+        else{
+            figureWithOneColor = getBlackFigures(figures);
+//            bordWithoutTailWithSimilarFigureColor = getTailsWithoutBlackFigure(tails);
+        }
+
+        //рандомная фигура из числа тех кто может ходить в свой ход(в )
+        Figure randomFigure = getRandomFigure(canMoveFigures(figureWithOneColor));
+//        randomFigure.tailForTheMove(bordWithoutTailWithSimilarFigureColor);
+
+        randomFigure.coordinateForTheMove()
+
+
+        }
+//        List<List<Integer>> moves = figure.possibleMoves();
 
 
     }

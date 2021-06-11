@@ -23,13 +23,12 @@ public class Tail {
     private int tailHeight;
 
     @Getter
+    @Setter
     Figure figure;
 
     public Tail(int id, Figure figure) {
         Id = id;
         this.figure = figure;
     }
-
-
 
 }
