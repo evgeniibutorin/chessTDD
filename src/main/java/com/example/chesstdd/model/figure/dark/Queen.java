@@ -20,10 +20,6 @@ public class Queen implements Figure {
     private int id;
 
     @Getter
-    @Setter
-    private int position;
-
-    @Getter
     Color color;
 
     @Getter
@@ -33,6 +29,9 @@ public class Queen implements Figure {
     @Getter
     @Setter
     private int heightPosition;
+
+    @Getter
+    private String logo;
 
     List<List<Integer>> figureMoves = Arrays.asList(
             Arrays.asList(1,1),
@@ -116,11 +115,11 @@ public class Queen implements Figure {
         return move;
     }
 
-    public Queen(int id, int position, Color color, int widthPosition, int heightPosition) {
+    public Queen(int id, Color color, int widthPosition, int heightPosition, String logo) {
         this.id = id;
-        this.position = position;
         this.color = color;
         this.widthPosition = widthPosition;
         this.heightPosition = heightPosition;
+        this.logo = logo;
     }
 }

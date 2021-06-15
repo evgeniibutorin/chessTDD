@@ -20,9 +20,9 @@ public class King implements Figure {
     @Getter
     private int id;
 
-    @Getter
-    @Setter
-    private int position;
+//    @Getter
+//    @Setter
+//    private int position;
 
     @Getter
     Color color;
@@ -35,6 +35,8 @@ public class King implements Figure {
     @Setter
     private int heightPosition;
 
+    @Getter
+    private String logo;
 
 
     List<List<Integer>> figureMoves = Arrays.asList(
@@ -70,11 +72,11 @@ public class King implements Figure {
         return move;
     }
 
-    public King(int id, int position, Color color, int widthPosition, int heightPosition) {
+    public King(int id, Color color, int widthPosition, int heightPosition, String logo) {
         this.id = id;
-        this.position = position;
         this.color = color;
         this.widthPosition = widthPosition;
         this.heightPosition = heightPosition;
+        this.logo = logo;
     }
 }

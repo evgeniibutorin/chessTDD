@@ -22,10 +22,6 @@ public class Knight implements Figure {
     private int id;
 
     @Getter
-    @Setter
-    private int position;
-
-    @Getter
     Color color;
 
     @Getter
@@ -40,6 +36,10 @@ public class Knight implements Figure {
     @JsonIgnore
     private List<Tail> tailsToMove;
 
+
+    @Getter
+    private String logo;
+
     List<List<Integer>> figureMoves = Arrays.asList(
             Arrays.asList(-2, 1),
             Arrays.asList(-1,2),
@@ -49,7 +49,6 @@ public class Knight implements Figure {
             Arrays.asList(1,-2),
             Arrays.asList(-1,-2),
             Arrays.asList(-2,-1));
-
 
     /**
      * @param tails - tails minus tails with figures of the same color.
@@ -72,7 +71,6 @@ public class Knight implements Figure {
         return possibleTalesForMove;
     }
 
-
     /**
      * Change figure coordinate
      * @param tail - target tails to move
@@ -86,33 +84,11 @@ public class Knight implements Figure {
             return Arrays.asList(widthPosition,heightPosition);
     }
 
-
-
-
-
-
-    //    public List<Integer> coordinateForTheMove(Figure figure) {
-//        int coordinateForNewWidth = 0;
-//        int coordinateForNewHeight = 0;
-//        for (int i = 0; i < figureMoves.size(); i++) {
-//            List<Integer> move = figureMoves.get(i);
-//            int newWidth = widthPosition + move.get(0);
-//            coordinateForNewWidth = newWidth;
-//            int newHeight = heightPosition + move.get(1);
-//            coordinateForNewHeight = newHeight;
-//            if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight) {
-//                this.widthPosition = newWidth;
-//                this.heightPosition = newHeight; }
-//        }
-//        List<Integer> newCoordinate = Arrays.asList(coordinateForNewWidth, coordinateForNewHeight);
-//        return newCoordinate;
-//    }
-
-    public Knight(int id, int position, Color color, int widthPosition, int heightPosition) {
+    public Knight(int id, Color color, int widthPosition, int heightPosition, String logo) {
         this.id = id;
-        this.position = position;
         this.color = color;
         this.widthPosition = widthPosition;
         this.heightPosition = heightPosition;
+        this.logo = logo;
     }
 }

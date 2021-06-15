@@ -20,10 +20,6 @@ public class Pawn implements Figure {
     private int id;
 
     @Getter
-    @Setter
-    private int position;
-
-    @Getter
     Color color;
 
     @Getter
@@ -34,7 +30,8 @@ public class Pawn implements Figure {
     @Setter
     private int heightPosition;
 
-
+    @Getter
+    private String logo;
 
     List<List<Integer>> figureMoves = figureMovesSender();
 
@@ -79,8 +76,6 @@ public class Pawn implements Figure {
         return move;
     }
 
-
-
     public List<Tail> possibleMoves(List<Tail> tails) {
         List<Tail> possibleTalesForMove = new ArrayList<>();
         for (int i = 0; i < figureMoves.size(); i++) {
@@ -104,11 +99,11 @@ public class Pawn implements Figure {
         return move;
     }
 
-    public Pawn(int id, int position, Color color, int widthPosition, int heightPosition) {
+    public Pawn(int id, Color color, int widthPosition, int heightPosition, String logo) {
         this.id = id;
-        this.position = position;
         this.color = color;
         this.widthPosition = widthPosition;
         this.heightPosition = heightPosition;
+        this.logo = logo;
     }
 }

@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface Figure {
     int getId();
-    int getPosition();
-    void setPosition(int i);
     Color getColor();
     int getHeightPosition();
     void setHeightPosition(int i);
