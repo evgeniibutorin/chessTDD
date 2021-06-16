@@ -17,12 +17,8 @@ public class ChessService {
 
     private int tern = 0;
 
-    private final List<Figure> allFigures = createFigure();
-    private final List<Tail> allTails = setCoordinate(tailIdAndFigureIdCreator());
-
-
-//    List<Figure> figuresInGame = createFigure();
-//    List<Tail> tailsInGame = setCoordinate(tailIdAndFigureIdCreator());
+    private List<Figure> allFigures = createFigure();
+    private List<Tail> allTails = setCoordinate(tailIdAndFigureIdCreator());
 
     public List<Tail> tailIdAndFigureIdCreator() {
         List<Tail> board = new ArrayList<>();
@@ -126,10 +122,6 @@ public class ChessService {
         return tailsWithoutBlackFigure;
     }
 
-
-    List<Tail> tailsInGame = setTailsInGame();
-    List<Figure> figuresInGame = setFigureInGame();
-
     private List<Tail> setTailsInGame() {
         List<Tail> crutch = new ArrayList<>();
         crutch.addAll(allTails);
@@ -182,9 +174,9 @@ public class ChessService {
         List<Figure> canMove = new ArrayList<>();
         List<Tail> tailsToCheck;
         if (tern % 2 == 0) {
-            tailsToCheck = getTailsWithoutWhiteFigure(tailsInGame);
+            tailsToCheck = getTailsWithoutWhiteFigure(allTails);
         } else {
-            tailsToCheck = getTailsWithoutBlackFigure(tailsInGame);
+            tailsToCheck = getTailsWithoutBlackFigure(allTails);
         }
 
         for (Figure figure : figures) {
@@ -212,16 +204,16 @@ public class ChessService {
     public List<Tail> move() {
         List<Figure> figureWithOneColor;
         if (tern % 2 == 0) {
-            figureWithOneColor = getWhiteFigures(figuresInGame);
+            figureWithOneColor = getWhiteFigures(allFigures);
         } else {
             //возвращает 32 элемента все белые и все черные разобраться и исправить.
-            figureWithOneColor = getBlackFigures(figuresInGame);
+            figureWithOneColor = getBlackFigures(allFigures);
         }
         //random piece from among those who can move on their turn
         Figure randomFigure = getRandomFigure(canMoveFigures(figureWithOneColor));
 
         //убираем из списка клеток фигуру
-        for (Tail tail : tailsInGame) {
+        for (Tail tail : allTails) {
             if (tail.getTailWidth() == randomFigure.getWidthPosition() && tail.getTailHeight() == randomFigure.getHeightPosition()) {
                 tail.setFigure(null);
             }
@@ -229,18 +221,18 @@ public class ChessService {
         //Получаем координаты для хода выбранной случайной фигуры
         List<Integer> goalCoordinate = randomFigure.coordinateForTheMove();
         //Находим в списке игровых клеток клетку, куда доложен быть сделан ход.
-        for (Tail tail : tailsInGame) {
+        for (Tail tail : allTails) {
             if (tail.getTailWidth() == goalCoordinate.get(0) && tail.getTailHeight() == goalCoordinate.get(1)) {
                 //Получаем значение фигуры которое есть в выбранной для хода клетке
                 Figure oldFigure = tail.getFigure();
                 //Если в клетке есть фигура то устанавливаем значение фигуры в клетке null, находим фигуру в списке играющих фигур и удаляем ее.
                 if (oldFigure != null) {
-                    for (Figure figure : figuresInGame) {
+                    for (Figure figure : allFigures) {
                         if (figure.getId() == oldFigure.getId()) {
                             tail.setFigure(null);
                         }
                     }
-                    figuresInGame.remove(oldFigure);
+                    allFigures.remove(oldFigure);
                 }
                 randomFigure.setWidthPosition(goalCoordinate.get(0));
                 randomFigure.setHeightPosition(goalCoordinate.get(1));
@@ -249,20 +241,16 @@ public class ChessService {
             }
         }
         tern++;
-        return tailsInGame;
+        return allTails;
     }
 
     public List<Tail> restartGame() {
-        List<Figure> allFigures = createFigure();
-        List<Tail> allTails = setCoordinate(tailIdAndFigureIdCreator());
-
-        figuresInGame.clear();
-
-        figuresInGame.addAll(allFigures);
-        tailsInGame.clear();
-        tailsInGame.addAll(allTails);
+        allFigures.clear();
+        allFigures = createFigure();
+        allTails.clear();
+        allTails = setCoordinate(tailIdAndFigureIdCreator());
         tern = 0;
-        return tailsInGame;
+        return allTails;
     }
 
 
