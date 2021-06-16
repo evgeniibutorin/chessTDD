@@ -3,6 +3,7 @@ package com.example.chesstdd.service;
 import com.example.chesstdd.model.Tail;
 import com.example.chesstdd.model.figure.Figure;
 import com.example.chesstdd.model.figure.dark.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Random;
 import static com.example.chesstdd.model.Color.DARK;
 import static com.example.chesstdd.model.Color.WHITE;
 
+@Service
 public class ChessService {
 
     private int tern = 0;
@@ -23,9 +25,17 @@ public class ChessService {
         List<Tail> board = new ArrayList<>();
         for (int i = 0; i < 64; i++) {
             Figure figure = null;
+            //падает на 47 потому что в списке нет элемента с таким номером нужно искать по id
             if (i < 16 || i > 47) {
-                figure = allFigures.get(i);
+//                figure = allFigures.get(i);
+                for (Figure f: allFigures){
+                    if (f.getId()==i){
+                        figure = f;
+                        break;
+                    }
+                }
             }
+            else {figure=null;}
             board.add(new Tail(i, figure));
         }
         return board;
@@ -85,8 +95,9 @@ public class ChessService {
             int width = i - 8;
             int height = 1;
             board.add(new Pawn(i, WHITE, width, height,"♙"));
+//            board.add(new Pawn(i, WHITE, width, height,"♙"));
         }
-        for (int j = 48; j < 58; j++) {
+        for (int j = 48; j < 56; j++) {
             int width = j - 48;
             int height = 6;
             board.add(new Pawn(j, DARK, width, height,"♟"));
@@ -160,7 +171,7 @@ public class ChessService {
 
     /**
      * @param figures result getBlackFigures() or getWhiteFigures()
-     * @return List of figures that can move.
+     * @return List of figures one color that can move.
      */
     public List<Figure> canMoveFigures(List<Figure> figures) {
         List<Figure> canMove = new ArrayList<>();
@@ -191,10 +202,9 @@ public class ChessService {
 
 
     /**
-     * @param movingFigure - figure fore move
-     * @return List of figures to be sent from the controller
+     * @return List of tiles to be sent from the controller
      */
-    public List<Figure> move(Figure movingFigure) {
+    public List<Tail> move() {
         List<Figure> figureWithOneColor;
         if (tern % 2 == 0) {
             figureWithOneColor = getWhiteFigures(figuresInGame);
@@ -203,28 +213,37 @@ public class ChessService {
         }
         //random piece from among those who can move on their turn
         Figure randomFigure = getRandomFigure(canMoveFigures(figureWithOneColor));
+        //Получаем координаты для хода выбранной случайной фигуры
         List<Integer> goalCoordinate = randomFigure.coordinateForTheMove();
+        //Находим в списке игровых клеток клетку, куда доложен быть сделан ход.
         for (Tail tail : tailsInGame) {
             if (tail.getTailWidth() == goalCoordinate.get(0) && tail.getTailHeight() == goalCoordinate.get(1)) {
+                //Получаем значение фигуры которое есть в выбранной для хода клетке
                 Figure oldFigure = tail.getFigure();
+                //Если в клетке есть фигура то устанавливаем значение фигуры в клетке null, находим фигуру в списке играющих фигур и удаляем ее.
                 if (oldFigure!=null) {
                     for (Figure figure : figuresInGame) {
                         if (figure.getId() == oldFigure.getId()){
                             tail.setFigure(null);
                         }
                     }
+                    figuresInGame.remove(oldFigure);
                 }
-                figuresInGame.remove(oldFigure);
+                randomFigure.setWidthPosition(goalCoordinate.get(0));
+                randomFigure.setHeightPosition(goalCoordinate.get(1));
                 tail.setFigure(randomFigure);
                 break;
             }
         }
-        return this.figuresInGame;
+        tern++;
+        return tailsInGame;
     }
 
     public List<Tail> restarterGane(){
         this.figuresInGame.addAll(allFigures);
-        this.tailsInGame.addAll(allTails);
+        tailsInGame.clear();
+        tailsInGame.addAll(allTails);
+        tern=0;
         return allTails;
     }
 

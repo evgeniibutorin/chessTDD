@@ -11,7 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Tail {
 
-    int Id;
+    @Getter
+    int id;
     @Getter
     @Setter
     private int tailWidth;
@@ -24,7 +25,7 @@ public class Tail {
     Figure figure;
 
     public Tail(int id, Figure figure) {
-        Id = id;
+        this.id = id;
         this.figure = figure;
     }
 

@@ -3,6 +3,7 @@ package com.example.chesstdd.model.figure.dark;
 import com.example.chesstdd.model.Color;
 import com.example.chesstdd.model.Tail;
 import com.example.chesstdd.model.figure.Figure;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,20 @@ public class Pawn implements Figure {
     @Getter
     private String logo;
 
-    List<List<Integer>> figureMoves = figureMovesSender();
+    @Getter
+    @JsonIgnore
+    private List<Tail> tailsToMove;
+
+    public Pawn(int id, Color color, int widthPosition, int heightPosition, String logo) {
+        this.id = id;
+        this.color = color;
+        this.widthPosition = widthPosition;
+        this.heightPosition = heightPosition;
+        this.logo = logo;
+        this.figureMoves = figureMovesSender();
+    }
+
+    List<List<Integer>> figureMoves;
 
     public List<List<Integer>> figureMovesSender(){
         List<List<Integer>> figureMoves = null;
@@ -54,56 +68,35 @@ public class Pawn implements Figure {
             return figureMoves;
     }
 
-    public  List<List<Integer>> possibleMoves(int heightPosition, int widthPosition) {
-
-        List<List<Integer>> possibleMoves = new ArrayList<>();
-        for (int i = 0; i < figureMoves.size(); i++) {
-            List<Integer> move = figureMoves.get(i);
-            //todo: add method to check that tail is free
-            if ((heightPosition+move.get(0)>=0)&(heightPosition+move.get(0)<8)
-                    &(widthPosition+move.get(1)>=0)&(widthPosition+move.get(1)<8)){
-                possibleMoves.add(move);
-            }
-
-        }
-        return possibleMoves;
-    }
-
-    public List<Integer> coordinatesForTheMove(int heightPosition, int widthPosition){
-        List<List<Integer>> possibleMoves = possibleMoves(heightPosition, widthPosition);
-        Random rand = new Random();
-        List<Integer> move = possibleMoves.get(rand.nextInt(possibleMoves.size()));
-        return move;
-    }
-
+    /**
+     * @param tails - tails minus tails with figures of the same color.
+     * @return List of tails where a figure can make a move
+     */
     public List<Tail> possibleMoves(List<Tail> tails) {
         List<Tail> possibleTalesForMove = new ArrayList<>();
         for (int i = 0; i < figureMoves.size(); i++) {
             List<Integer> move = figureMoves.get(i);
-            int newWidth = widthPosition+move.get(0);
-            int newHeight = heightPosition+move.get(1);
-            for (Tail tail:tails){
-                if (tail.getTailWidth()==newWidth&&tail.getTailHeight()==newHeight){
+            int newWidth = widthPosition + move.get(0);
+            int newHeight = heightPosition + move.get(1);
+            for (Tail tail : tails) {
+                if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight) {
                     possibleTalesForMove.add(tail);
+                    break;
                 }
             }
         }
-
+        tailsToMove=possibleTalesForMove;
         return possibleTalesForMove;
     }
 
-    public Tail tailForTheMove(List<Tail> tails){
-        List<Tail> possibleMoves = possibleMoves(tails);
-        Random rand = new Random();
-        Tail move = possibleMoves.get(rand.nextInt(possibleMoves.size()));
-        return move;
+    public List<Integer> coordinateForTheMove() {
+        Random random = new Random();
+        Tail tail = this.tailsToMove.get(random.nextInt(this.tailsToMove.size()));
+
+        int widthPosition = tail.getTailWidth();
+        int heightPosition = tail.getTailHeight();
+        return Arrays.asList(widthPosition,heightPosition);
     }
 
-    public Pawn(int id, Color color, int widthPosition, int heightPosition, String logo) {
-        this.id = id;
-        this.color = color;
-        this.widthPosition = widthPosition;
-        this.heightPosition = heightPosition;
-        this.logo = logo;
-    }
+
 }

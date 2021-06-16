@@ -52,7 +52,7 @@ public class Knight implements Figure {
 
     /**
      * @param tails - tails minus tails with figures of the same color.
-     * @return
+     * @return List of tails where a figure can make a move
      */
     public List<Tail> possibleMoves(List<Tail> tails) {
         List<Tail> possibleTalesForMove = new ArrayList<>();
@@ -67,14 +67,10 @@ public class Knight implements Figure {
                 }
             }
         }
-        this.tailsToMove=possibleTalesForMove;
+        tailsToMove=possibleTalesForMove;
         return possibleTalesForMove;
     }
 
-    /**
-     * Change figure coordinate
-     * @param tail - target tails to move
-     */
         public List<Integer> coordinateForTheMove() {
             Random random = new Random();
             Tail tail = this.tailsToMove.get(random.nextInt(this.tailsToMove.size()));

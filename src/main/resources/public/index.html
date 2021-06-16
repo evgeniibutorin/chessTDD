@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- JQuerry library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+  <script type="text/javascript">
+    $(document).on("click", "#make_move", function () {
+      $.get("http://localhost:9090/make_move", function (responseJson) {
+        $.each(responseJson, function (index, tail) {
+          $("#" + tail.id).html(!!tail.figure ? tail.figure.logo : '');
+          // let tl = document.getElementById(tail.id.toString());
+          // tl.innerHTML ="";
+          // tl.innerHTML = tail.figure.logo;
+        });
+      });
+    })
+  </script>
+
+  <script type="text/javascript">
+    $(document).on("click", "#restart_game", function () {
+      $.get("http://localhost:9090/restart_game", function (responseJson) {
+        $.each(responseJson, function (index, tail) {
+          $("#" + tail.id).html(!!tail.figure ? tail.figure.logo : '');
+          // let tl = document.getElementById(tail.id);
+          // tl.innerHTML ="";
+          // tl.innerHTML = tail.figure.logo;
+          // let tl = document.getElementById(tail.id.toString());
+        });
+      });
+    })
+  </script>
+
+  <title></title>
+  <meta charset="UTF-8">
+  <style>
+    .chess-board { border-spacing: 0; border-collapse: collapse; }
+    .chess-board th { padding: .5em; }
+    .chess-board td { border: 1px solid; width: 2em; height: 2em; }
+    .chess-board .light { background: #9e7c7c; }
+    .chess-board .dark { background: #493939; }
+  </style>
+</head>
+<body>
+
+<button id="restart_game",>Restart game</button>
+<br/> <br/>
+
+<button id="make_move">Make move</button>
+<br/> <br/>
+
+<table class="chess-board">
+  <tbody>
+  <tr>
+    <th></th>
+    <th>a</th>
+    <th>b</th>
+    <th>c</th>
+    <th>d</th>
+    <th>e</th>
+    <th>f</th>
+    <th>g</th>
+    <th>h</th>
+  </tr>
+  <tr>
+    <th>1</th>
+    <td id="0" class="light"></td>
+    <td id="1" class="dark"></td>
+    <td id="2" class="light"></td>
+    <td id="3" class="dark"></td>
+    <td id="4" class="light"></td>
+    <td id="5" class="dark"></td>
+    <td id="6" class="light"></td>
+    <td id="7" class="dark"></td>
+  </tr>
+  <tr>
+    <th>2</th>
+    <td id="8" class="dark"></td>
+    <td id="9" class="light"></td>
+    <td id="10" class="dark"></td>
+    <td id="11" class="light"></td>
+    <td id="12" class="dark"></td>
+    <td id="13" class="light"></td>
+    <td id="14" class="dark"></td>
+    <td id="15" class="light"></td>
+  </tr>
+  <tr>
+    <th>3</th>
+    <td id="16" class="light"></td>
+    <td id="17" class="dark"></td>
+    <td id="18" class="light"></td>
+    <td id="19" class="dark"></td>
+    <td id="20" class="light"></td>
+    <td id="21" class="dark"></td>
+    <td id="22" class="light"></td>
+    <td id="23" class="dark"></td>
+  </tr>
+  <tr>
+    <th>4</th>
+    <td id="24" class="dark"></td>
+    <td id="25" class="light"></td>
+    <td id="26" class="dark"></td>
+    <td id="27" class="light"></td>
+    <td id="28" class="dark"></td>
+    <td id="29" class="light"></td>
+    <td id="30" class="dark"></td>
+    <td id="31" class="light"></td>
+  </tr>
+  <tr>
+    <th>5</th>
+    <td id="32" class="light"></td>
+    <td id="33" class="dark"></td>
+    <td id="34" class="light"></td>
+    <td id="35" class="dark"></td>
+    <td id="36" class="light"></td>
+    <td id="37" class="dark"></td>
+    <td id="38" class="light"></td>
+    <td id="39" class="dark"></td>
+  </tr>
+  <tr>
+    <th>6</th>
+    <td id="40" class="dark"></td>
+    <td id="41" class="light"></td>
+    <td id="42" class="dark"></td>
+    <td id="43" class="light"></td>
+    <td id="44" class="dark"></td>
+    <td id="45" class="light"></td>
+    <td id="46" class="dark"></td>
+    <td id="47" class="light"></td>
+  </tr>
+  <tr>
+    <th>7</th>
+    <td id="48" class="light"></td>
+    <td id="49" class="dark"></td>
+    <td id="50" class="light"></td>
+    <td id="51" class="dark"></td>
+    <td id="52" class="light"></td>
+    <td id="53" class="dark"></td>
+    <td id="54" class="light"></td>
+    <td id="55" class="dark"></td>
+  </tr>
+  <tr>
+    <th>8</th>
+    <td id="56" class="dark"></td>
+    <td id="57" class="light"></td>
+    <td id="58" class="dark"></td>
+    <td id="59" class="light"></td>
+    <td id="60" class="dark"></td>
+    <td id="61" class="light"></td>
+    <td id="62" class="dark"></td>
+    <td id="63" class="light"></td>
+  </tr>
+  </tbody>
+
+
+</table>
+</body>
+</html>
