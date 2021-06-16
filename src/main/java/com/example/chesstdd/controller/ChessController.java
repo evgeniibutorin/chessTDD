@@ -27,7 +27,7 @@ public class ChessController {
     @GetMapping("restart_game")
     @ResponseBody
     public List<Tail> startGame() {
-        List<Tail> tails = chessService.restarterGane();
+        List<Tail> tails = chessService.restartGame();
         return tails;
     }
 

@@ -21,21 +21,24 @@ public class ChessService {
     private final List<Tail> allTails = setCoordinate(tailIdAndFigureIdCreator());
 
 
+//    List<Figure> figuresInGame = createFigure();
+//    List<Tail> tailsInGame = setCoordinate(tailIdAndFigureIdCreator());
+
     public List<Tail> tailIdAndFigureIdCreator() {
         List<Tail> board = new ArrayList<>();
         for (int i = 0; i < 64; i++) {
             Figure figure = null;
             //падает на 47 потому что в списке нет элемента с таким номером нужно искать по id
             if (i < 16 || i > 47) {
-//                figure = allFigures.get(i);
-                for (Figure f: allFigures){
-                    if (f.getId()==i){
+                for (Figure f : allFigures) {
+                    if (f.getId() == i) {
                         figure = f;
                         break;
                     }
                 }
+            } else {
+                figure = null;
             }
-            else {figure=null;}
             board.add(new Tail(i, figure));
         }
         return board;
@@ -83,33 +86,33 @@ public class ChessService {
 
     public List<Figure> createFigure() {
         List<Figure> board = new ArrayList<>();
-        board.add(new Rook(0, WHITE, 0, 0,"♖"));
-        board.add(new Knight(1, WHITE, 1, 0,"♘"));
+        board.add(new Rook(0, WHITE, 0, 0, "♖"));
+        board.add(new Knight(1, WHITE, 1, 0, "♘"));
         board.add(new Bishop(2, WHITE, 2, 0, "♗"));
-        board.add(new Queen(3, WHITE, 3, 0,"♕"));
+        board.add(new Queen(3, WHITE, 3, 0, "♕"));
         board.add(new King(4, WHITE, 4, 0, "♔"));
-        board.add(new Bishop(5, WHITE, 5, 0,"♗"));
-        board.add(new Knight(6, WHITE, 6, 0,"♘"));
-        board.add(new Rook(7, WHITE, 7, 0,"♖"));
+        board.add(new Bishop(5, WHITE, 5, 0, "♗"));
+        board.add(new Knight(6, WHITE, 6, 0, "♘"));
+        board.add(new Rook(7, WHITE, 7, 0, "♖"));
         for (int i = 8; i < 16; i++) {
             int width = i - 8;
             int height = 1;
-            board.add(new Pawn(i, WHITE, width, height,"♙"));
+            board.add(new Pawn(i, WHITE, width, height, "♙"));
 //            board.add(new Pawn(i, WHITE, width, height,"♙"));
         }
         for (int j = 48; j < 56; j++) {
             int width = j - 48;
             int height = 6;
-            board.add(new Pawn(j, DARK, width, height,"♟"));
+            board.add(new Pawn(j, DARK, width, height, "♟"));
         }
-        board.add(new Rook(56, DARK, 0, 7,"♜"));
-        board.add(new Knight(57, DARK, 1, 7,"♞"));
-        board.add(new Bishop(58, DARK, 2, 7,"♝"));
-        board.add(new Queen(59, DARK, 3, 7,"♛"));
-        board.add(new King(60, DARK, 4, 7,"♚"));
-        board.add(new Bishop(61, DARK, 5, 7,"♝"));
-        board.add(new Knight(62, DARK, 6, 7,"♞"));
-        board.add(new Rook(63, DARK, 7, 7,"♜"));
+        board.add(new Rook(56, DARK, 0, 7, "♜"));
+        board.add(new Knight(57, DARK, 1, 7, "♞"));
+        board.add(new Bishop(58, DARK, 2, 7, "♝"));
+        board.add(new Queen(59, DARK, 3, 7, "♛"));
+        board.add(new King(60, DARK, 4, 7, "♚"));
+        board.add(new Bishop(61, DARK, 5, 7, "♝"));
+        board.add(new Knight(62, DARK, 6, 7, "♞"));
+        board.add(new Rook(63, DARK, 7, 7, "♜"));
         return board;
     }
 
@@ -123,26 +126,28 @@ public class ChessService {
         return tailsWithoutBlackFigure;
     }
 
+
     List<Tail> tailsInGame = setTailsInGame();
     List<Figure> figuresInGame = setFigureInGame();
 
-    private List<Tail> setTailsInGame(){
+    private List<Tail> setTailsInGame() {
         List<Tail> crutch = new ArrayList<>();
         crutch.addAll(allTails);
         return crutch;
     }
 
-    private List<Figure> setFigureInGame(){
+    private List<Figure> setFigureInGame() {
         List<Figure> crutch = new ArrayList<>();
         crutch.addAll(allFigures);
         return crutch;
     }
 
 
+
     public List<Tail> getTailsWithoutWhiteFigure(List<Tail> tailsWithAllFigures) {
         List<Tail> tailsWithoutWhiteFigure = new ArrayList<>();
         for (Tail tail : tailsWithAllFigures) {
-            if (tail.getFigure() == null || !(tail.getFigure().getId() > 0 && tail.getFigure().getId() < 16)) {
+            if (tail.getFigure() == null || !(tail.getFigure().getId() >= 0 && tail.getFigure().getId() < 16)) {
                 tailsWithoutWhiteFigure.add(tail);
             }
         }
@@ -162,7 +167,7 @@ public class ChessService {
     public List<Figure> getBlackFigures(List<Figure> figures) {
         List<Figure> blackFigures = new ArrayList<>();
         for (Figure figure : figures) {
-            if (figure.getColor() == WHITE) {
+            if (figure.getColor() == DARK) {
                 blackFigures.add(figure);
             }
         }
@@ -209,10 +214,18 @@ public class ChessService {
         if (tern % 2 == 0) {
             figureWithOneColor = getWhiteFigures(figuresInGame);
         } else {
+            //возвращает 32 элемента все белые и все черные разобраться и исправить.
             figureWithOneColor = getBlackFigures(figuresInGame);
         }
         //random piece from among those who can move on their turn
         Figure randomFigure = getRandomFigure(canMoveFigures(figureWithOneColor));
+
+        //убираем из списка клеток фигуру
+        for (Tail tail : tailsInGame) {
+            if (tail.getTailWidth() == randomFigure.getWidthPosition() && tail.getTailHeight() == randomFigure.getHeightPosition()) {
+                tail.setFigure(null);
+            }
+        }
         //Получаем координаты для хода выбранной случайной фигуры
         List<Integer> goalCoordinate = randomFigure.coordinateForTheMove();
         //Находим в списке игровых клеток клетку, куда доложен быть сделан ход.
@@ -221,9 +234,9 @@ public class ChessService {
                 //Получаем значение фигуры которое есть в выбранной для хода клетке
                 Figure oldFigure = tail.getFigure();
                 //Если в клетке есть фигура то устанавливаем значение фигуры в клетке null, находим фигуру в списке играющих фигур и удаляем ее.
-                if (oldFigure!=null) {
+                if (oldFigure != null) {
                     for (Figure figure : figuresInGame) {
-                        if (figure.getId() == oldFigure.getId()){
+                        if (figure.getId() == oldFigure.getId()) {
                             tail.setFigure(null);
                         }
                     }
@@ -239,12 +252,17 @@ public class ChessService {
         return tailsInGame;
     }
 
-    public List<Tail> restarterGane(){
-        this.figuresInGame.addAll(allFigures);
+    public List<Tail> restartGame() {
+        List<Figure> allFigures = createFigure();
+        List<Tail> allTails = setCoordinate(tailIdAndFigureIdCreator());
+
+        figuresInGame.clear();
+
+        figuresInGame.addAll(allFigures);
         tailsInGame.clear();
         tailsInGame.addAll(allTails);
-        tern=0;
-        return allTails;
+        tern = 0;
+        return tailsInGame;
     }
 
 
