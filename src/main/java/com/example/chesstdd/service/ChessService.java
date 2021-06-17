@@ -1,5 +1,6 @@
 package com.example.chesstdd.service;
 
+import com.example.chesstdd.model.Color;
 import com.example.chesstdd.model.Tail;
 import com.example.chesstdd.model.Turn;
 import com.example.chesstdd.model.figure.*;
@@ -17,8 +18,6 @@ public class ChessService {
 
 
     private Turn turnToMove;
-
-    private int tern = 0;
 
     private List<Figure> allFigures = createFigure();
     private List<Tail> allTails = setCoordinate(tailIdAndFigureIdCreator());
@@ -101,7 +100,6 @@ public class ChessService {
             int width = i - 8;
             int height = 1;
             board.add(new Pawn(i, WHITE, width, height, "♙"));
-//            board.add(new Pawn(i, WHITE, width, height,"♙"));
         }
         for (int j = 48; j < 56; j++) {
             int width = j - 48;
@@ -119,69 +117,29 @@ public class ChessService {
         return board;
     }
 
-    public List<Tail> getTailsWithoutBlackFigure(List<Tail> tailsWithAllFigures) {
-        List<Tail> tailsWithoutBlackFigure = new ArrayList<>();
-        for (Tail tail : tailsWithAllFigures) {
-            if (tail.getFigure() == null || tail.getFigure().getId() < 48) {
-                tailsWithoutBlackFigure.add(tail);
-            }
-        }
-        return tailsWithoutBlackFigure;
-    }
-
-    private List<Tail> setTailsInGame() {
-        List<Tail> crutch = new ArrayList<>();
-        crutch.addAll(allTails);
-        return crutch;
-    }
-
-    private List<Figure> setFigureInGame() {
-        List<Figure> crutch = new ArrayList<>();
-        crutch.addAll(allFigures);
-        return crutch;
-    }
-
+    /**
+     * @param tailsWithAllFigures Все клетки
+     * @param currentColorFigures все фигуры в игре текущего цвета
+     * @return
+     */
     public List<Tail> getTailsWithoutCurrentColorFigure(List<Tail> tailsWithAllFigures, List<Figure> currentColorFigures) {
         List<Tail> tailsWithoutCurrentColorFigures = new ArrayList<>();
         for (Tail tail : tailsWithAllFigures) {
-            if (tail.getFigure() == null || !(currentColorFigures.contains(tail.getFigure()))) {
+            if (tail.getFigure() == null || !currentColorFigures.contains(tail.getFigure())) {
                 tailsWithoutCurrentColorFigures.add(tail);
             }
         }
         return tailsWithoutCurrentColorFigures;
     }
 
-    public List<Tail> getTailsWithoutWhiteFigure(List<Tail> tailsWithAllFigures) {
-        List<Tail> tailsWithoutWhiteFigure = new ArrayList<>();
-        for (Tail tail : tailsWithAllFigures) {
-            // todo зменить определение цвета фигур
-            if (tail.getFigure() == null || !(tail.getFigure().getId() >= 0 && tail.getFigure().getId() < 16)) {
-                tailsWithoutWhiteFigure.add(tail);
-            }
-        }
-        return tailsWithoutWhiteFigure;
-    }
-
-    //todo: соединить с getBlackFigures
-    public List<Figure> getWhiteFigures(List<Figure> figures) {
-        List<Figure> whiteFigures = new ArrayList<>();
+    public List<Figure> getCurrentColorFigures(List<Figure> figures, Color color){
+        List<Figure> currentColorFigures = new ArrayList<>();
         for (Figure figure : figures) {
-            if (figure.getColor() == WHITE) {
-                whiteFigures.add(figure);
+            if (color.equals(figure.getColor())) {
+                currentColorFigures.add(figure);
             }
         }
-        return whiteFigures;
-    }
-
-    //todo: соединить с getWhiteFigure
-    public List<Figure> getBlackFigures(List<Figure> figures) {
-        List<Figure> blackFigures = new ArrayList<>();
-        for (Figure figure : figures) {
-            if (DARK.equals(figure.getColor())) {
-                blackFigures.add(figure);
-            }
-        }
-        return blackFigures;
+        return currentColorFigures;
     }
 
     /**
@@ -190,14 +148,7 @@ public class ChessService {
      */
     public List<Figure> canMoveFigures(List<Figure> figures) {
         List<Figure> canMove = new ArrayList<>();
-        List<Tail> tailsToCheck;
-        // todo убрать использование tern
-        // todo объеденить методы getTailsWithout..Figure
-        if (tern % 2 == 0) {
-            tailsToCheck = getTailsWithoutWhiteFigure(allTails);
-        } else {
-            tailsToCheck = getTailsWithoutBlackFigure(allTails);
-        }
+        List<Tail> tailsToCheck = getTailsWithoutCurrentColorFigure(allTails, figures);
 
         for (Figure figure : figures) {
             if (!figure.possibleMoves(tailsToCheck).isEmpty()) {
@@ -221,14 +172,7 @@ public class ChessService {
      * @return List of tiles to be sent from the controller
      */
     public List<Tail> move() {
-        List<Figure> figureWithOneColor;
-        // todo заменить tern на отдеьлный класс с методом текущего цвета, через DI
-        if (tern % 2 == 0) {
-            figureWithOneColor = getWhiteFigures(allFigures);
-        } else {
-            //возвращает 32 элемента все белые и все черные разобраться и исправить.
-            figureWithOneColor = getBlackFigures(allFigures);
-        }
+        List<Figure> figureWithOneColor = getCurrentColorFigures(allFigures, turnToMove.toggleAndGet());
         //random piece from among those who can move on their turn
         Figure randomFigure = getRandomFigure(canMoveFigures(figureWithOneColor));
 
@@ -254,7 +198,6 @@ public class ChessService {
                 break;
             }
         }
-        tern++;
         return allTails;
     }
 
@@ -271,8 +214,9 @@ public class ChessService {
         allFigures = createFigure();
         allTails.clear();
         allTails = setCoordinate(tailIdAndFigureIdCreator());
-        tern = 0;
+//        tern = 0;
         turnToMove.setFigureTurn();
+
         return allTails;
     }
 

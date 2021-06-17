@@ -38,7 +38,7 @@ public class Bishop implements Figure {
     @JsonIgnore
     private List<Tail> tailsToMove;
 
-    private final List<List<Integer>> figureMoves = Arrays.asList(
+    private List<List<Integer>> figureMoves = Arrays.asList(
             Arrays.asList(1, 1),
             Arrays.asList(2, 2),
             Arrays.asList(3, 3),

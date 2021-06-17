@@ -5,16 +5,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class Turn {
 
-    private boolean isFigureWhite = false;
+    private boolean isFigureWhite;
 
-    public boolean isFigureTern() {
+    public Color toggleAndGet() {
         isFigureWhite = !isFigureWhite;
-        return isFigureWhite;
+        return isFigureWhite ? Color.WHITE : Color.DARK;
     }
-
 
     public void setFigureTurn() {
         isFigureWhite = false;
     }
-
 }
