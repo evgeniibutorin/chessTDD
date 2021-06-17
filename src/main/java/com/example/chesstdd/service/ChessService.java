@@ -1,8 +1,8 @@
 package com.example.chesstdd.service;
 
 import com.example.chesstdd.model.Tail;
-import com.example.chesstdd.model.figure.Figure;
-import com.example.chesstdd.model.figure.dark.*;
+import com.example.chesstdd.model.Turn;
+import com.example.chesstdd.model.figure.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,10 +15,17 @@ import static com.example.chesstdd.model.Color.WHITE;
 @Service
 public class ChessService {
 
+
+    private Turn turnToMove;
+
     private int tern = 0;
 
     private List<Figure> allFigures = createFigure();
     private List<Tail> allTails = setCoordinate(tailIdAndFigureIdCreator());
+
+    public ChessService(Turn turnToMove) {
+        this.turnToMove = turnToMove;
+    }
 
     public List<Tail> tailIdAndFigureIdCreator() {
         List<Tail> board = new ArrayList<>();
@@ -134,11 +141,20 @@ public class ChessService {
         return crutch;
     }
 
-
+    public List<Tail> getTailsWithoutCurrentColorFigure(List<Tail> tailsWithAllFigures, List<Figure> currentColorFigures) {
+        List<Tail> tailsWithoutCurrentColorFigures = new ArrayList<>();
+        for (Tail tail : tailsWithAllFigures) {
+            if (tail.getFigure() == null || !(currentColorFigures.contains(tail.getFigure()))) {
+                tailsWithoutCurrentColorFigures.add(tail);
+            }
+        }
+        return tailsWithoutCurrentColorFigures;
+    }
 
     public List<Tail> getTailsWithoutWhiteFigure(List<Tail> tailsWithAllFigures) {
         List<Tail> tailsWithoutWhiteFigure = new ArrayList<>();
         for (Tail tail : tailsWithAllFigures) {
+            // todo зменить определение цвета фигур
             if (tail.getFigure() == null || !(tail.getFigure().getId() >= 0 && tail.getFigure().getId() < 16)) {
                 tailsWithoutWhiteFigure.add(tail);
             }
@@ -146,6 +162,7 @@ public class ChessService {
         return tailsWithoutWhiteFigure;
     }
 
+    //todo: соединить с getBlackFigures
     public List<Figure> getWhiteFigures(List<Figure> figures) {
         List<Figure> whiteFigures = new ArrayList<>();
         for (Figure figure : figures) {
@@ -156,10 +173,11 @@ public class ChessService {
         return whiteFigures;
     }
 
+    //todo: соединить с getWhiteFigure
     public List<Figure> getBlackFigures(List<Figure> figures) {
         List<Figure> blackFigures = new ArrayList<>();
         for (Figure figure : figures) {
-            if (figure.getColor() == DARK) {
+            if (DARK.equals(figure.getColor())) {
                 blackFigures.add(figure);
             }
         }
@@ -167,12 +185,14 @@ public class ChessService {
     }
 
     /**
-     * @param figures result getBlackFigures() or getWhiteFigures()
+     * @param figures список всех фигур в игре текущего цвета
      * @return List of figures one color that can move.
      */
     public List<Figure> canMoveFigures(List<Figure> figures) {
         List<Figure> canMove = new ArrayList<>();
         List<Tail> tailsToCheck;
+        // todo убрать использование tern
+        // todo объеденить методы getTailsWithout..Figure
         if (tern % 2 == 0) {
             tailsToCheck = getTailsWithoutWhiteFigure(allTails);
         } else {
@@ -180,7 +200,7 @@ public class ChessService {
         }
 
         for (Figure figure : figures) {
-            if (!(figure.possibleMoves(tailsToCheck).size() == 0)) {
+            if (!figure.possibleMoves(tailsToCheck).isEmpty()) {
                 canMove.add(figure);
             }
         }
@@ -193,8 +213,7 @@ public class ChessService {
      */
     public Figure getRandomFigure(List<Figure> listFiguresThatCanMove) {
         Random random = new Random();
-        Figure figure = listFiguresThatCanMove.get(random.nextInt(listFiguresThatCanMove.size()));
-        return figure;
+        return listFiguresThatCanMove.get(random.nextInt(listFiguresThatCanMove.size()));
     }
 
 
@@ -203,6 +222,7 @@ public class ChessService {
      */
     public List<Tail> move() {
         List<Figure> figureWithOneColor;
+        // todo заменить tern на отдеьлный класс с методом текущего цвета, через DI
         if (tern % 2 == 0) {
             figureWithOneColor = getWhiteFigures(allFigures);
         } else {
@@ -213,13 +233,11 @@ public class ChessService {
         Figure randomFigure = getRandomFigure(canMoveFigures(figureWithOneColor));
 
         //убираем из списка клеток фигуру
-        for (Tail tail : allTails) {
-            if (tail.getTailWidth() == randomFigure.getWidthPosition() && tail.getTailHeight() == randomFigure.getHeightPosition()) {
-                tail.setFigure(null);
-            }
-        }
+        removeFigureFromOldTail(randomFigure);
+
         //Получаем координаты для хода выбранной случайной фигуры
         List<Integer> goalCoordinate = randomFigure.coordinateForTheMove();
+
         //Находим в списке игровых клеток клетку, куда доложен быть сделан ход.
         for (Tail tail : allTails) {
             if (tail.getTailWidth() == goalCoordinate.get(0) && tail.getTailHeight() == goalCoordinate.get(1)) {
@@ -227,11 +245,7 @@ public class ChessService {
                 Figure oldFigure = tail.getFigure();
                 //Если в клетке есть фигура то устанавливаем значение фигуры в клетке null, находим фигуру в списке играющих фигур и удаляем ее.
                 if (oldFigure != null) {
-                    for (Figure figure : allFigures) {
-                        if (figure.getId() == oldFigure.getId()) {
-                            tail.setFigure(null);
-                        }
-                    }
+                    tail.setFigure(null);
                     allFigures.remove(oldFigure);
                 }
                 randomFigure.setWidthPosition(goalCoordinate.get(0));
@@ -244,12 +258,21 @@ public class ChessService {
         return allTails;
     }
 
+    private void removeFigureFromOldTail(Figure randomFigure) {
+        for (Tail tail : allTails) {
+            if (tail.getTailWidth() == randomFigure.getWidthPosition() && tail.getTailHeight() == randomFigure.getHeightPosition()) {
+                tail.setFigure(null);
+            }
+        }
+    }
+
     public List<Tail> restartGame() {
         allFigures.clear();
         allFigures = createFigure();
         allTails.clear();
         allTails = setCoordinate(tailIdAndFigureIdCreator());
         tern = 0;
+        turnToMove.setFigureTurn();
         return allTails;
     }
 

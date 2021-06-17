@@ -1,4 +1,4 @@
-package com.example.chesstdd.model.figure.dark;
+package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
 import com.example.chesstdd.model.Tail;
@@ -32,7 +32,6 @@ public class Knight implements Figure {
     @Setter
     private int heightPosition;
 
-    @Getter
     @JsonIgnore
     private List<Tail> tailsToMove;
 
@@ -56,8 +55,7 @@ public class Knight implements Figure {
      */
     public List<Tail> possibleMoves(List<Tail> tails) {
         List<Tail> possibleTalesForMove = new ArrayList<>();
-        for (int i = 0; i < figureMoves.size(); i++) {
-            List<Integer> move = figureMoves.get(i);
+        for (List<Integer> move : figureMoves) {
             int newWidth = widthPosition + move.get(0);
             int newHeight = heightPosition + move.get(1);
             for (Tail tail : tails) {

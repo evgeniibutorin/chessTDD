@@ -1,4 +1,4 @@
-package com.example.chesstdd.model.figure.dark;
+package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
 import com.example.chesstdd.model.Tail;
@@ -16,7 +16,8 @@ import java.util.Random;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pawn implements Figure {
+public class Rook implements Figure {
+
     @Getter
     private int id;
 
@@ -34,39 +35,39 @@ public class Pawn implements Figure {
     @Getter
     private String logo;
 
-    @Getter
     @JsonIgnore
     private List<Tail> tailsToMove;
 
-    public Pawn(int id, Color color, int widthPosition, int heightPosition, String logo) {
-        this.id = id;
-        this.color = color;
-        this.widthPosition = widthPosition;
-        this.heightPosition = heightPosition;
-        this.logo = logo;
-        this.figureMoves = figureMovesSender();
-    }
-
-    List<List<Integer>> figureMoves;
-
-    public List<List<Integer>> figureMovesSender(){
-        List<List<Integer>> figureMoves = null;
-        if (color.equals(Color.WHITE)){
-            figureMoves = Arrays.asList(Arrays.asList(0, 2),
-                    Arrays.asList(0,1),
-                    Arrays.asList(1,1),
-                    Arrays.asList(-1,1));
-
-        }
-        if (color.equals(Color.DARK)){
-            figureMoves = Arrays.asList(Arrays.asList(0, -2),
-                    Arrays.asList(0,-1),
-                    Arrays.asList(1,-1),
-                    Arrays.asList(-1,-1));
-
-        }
-            return figureMoves;
-    }
+    List<List<Integer>> figureMoves = Arrays.asList(
+            Arrays.asList(0,1),
+            Arrays.asList(0,2),
+            Arrays.asList(0,3),
+            Arrays.asList(0,4),
+            Arrays.asList(0,5),
+            Arrays.asList(0,6),
+            Arrays.asList(0,7),
+            Arrays.asList(0,-1),
+            Arrays.asList(0,-2),
+            Arrays.asList(0,-3),
+            Arrays.asList(0,-4),
+            Arrays.asList(0,-5),
+            Arrays.asList(0,-6),
+            Arrays.asList(0,-7),
+            Arrays.asList(-1,0),
+            Arrays.asList(-2,0),
+            Arrays.asList(-3,0),
+            Arrays.asList(-4,0),
+            Arrays.asList(-5,0),
+            Arrays.asList(-6,0),
+            Arrays.asList(-7,0),
+            Arrays.asList(-1,0),
+            Arrays.asList(-2,0),
+            Arrays.asList(-3,0),
+            Arrays.asList(-4,0),
+            Arrays.asList(-5,0),
+            Arrays.asList(-6,0),
+            Arrays.asList(-7,0)
+    );
 
     /**
      * @param tails - tails minus tails with figures of the same color.
@@ -79,11 +80,7 @@ public class Pawn implements Figure {
             int newWidth = widthPosition + move.get(0);
             int newHeight = heightPosition + move.get(1);
             for (Tail tail : tails) {
-                if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight&&i==0&&tail.getFigure()==null) {
-                    possibleTalesForMove.add(tail);
-                    break;
-                }
-                else if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight&&i>0&&!(tail.getFigure()==null)){
+                if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight) {
                     possibleTalesForMove.add(tail);
                     break;
                 }
@@ -102,5 +99,11 @@ public class Pawn implements Figure {
         return Arrays.asList(widthPosition,heightPosition);
     }
 
-
+    public Rook(int id, Color color, int widthPosition, int heightPosition, String logo) {
+        this.id = id;
+        this.color = color;
+        this.widthPosition = widthPosition;
+        this.heightPosition = heightPosition;
+        this.logo = logo;
+    }
 }

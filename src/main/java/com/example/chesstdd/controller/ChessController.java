@@ -2,13 +2,12 @@ package com.example.chesstdd.controller;
 
 import com.example.chesstdd.model.Tail;
 import com.example.chesstdd.service.ChessService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class ChessController {
 
     private final ChessService chessService;
@@ -18,17 +17,13 @@ public class ChessController {
     }
 
     @GetMapping("make_move")
-    @ResponseBody
     public List<Tail> makeMove() {
-        List<Tail> tails = chessService.move();
-        return tails;
+        return chessService.move();
     }
 
     @GetMapping("restart_game")
-    @ResponseBody
     public List<Tail> startGame() {
-        List<Tail> tails = chessService.restartGame();
-        return tails;
+        return chessService.restartGame();
     }
 
 }

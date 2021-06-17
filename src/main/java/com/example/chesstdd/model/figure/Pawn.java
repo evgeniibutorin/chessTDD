@@ -1,4 +1,4 @@
-package com.example.chesstdd.model.figure.dark;
+package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
 import com.example.chesstdd.model.Tail;
@@ -14,10 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-@AllArgsConstructor
 @NoArgsConstructor
-public class Bishop implements Figure {
-
+@AllArgsConstructor
+public class Pawn implements Figure {
     @Getter
     private int id;
 
@@ -35,41 +34,43 @@ public class Bishop implements Figure {
     @Getter
     private String logo;
 
-    @Getter
     @JsonIgnore
     private List<Tail> tailsToMove;
 
-    List<List<Integer>> figureMoves = Arrays.asList(
-            Arrays.asList(1,1),
-            Arrays.asList(2,2),
-            Arrays.asList(3,3),
-            Arrays.asList(4,4),
-            Arrays.asList(5,5),
-            Arrays.asList(6,6),
-            Arrays.asList(7,7),
-            Arrays.asList(1,-1),
-            Arrays.asList(2,-2),
-            Arrays.asList(3,-3),
-            Arrays.asList(4,-4),
-            Arrays.asList(5,-5),
-            Arrays.asList(6,-6),
-            Arrays.asList(7,-7),
-            Arrays.asList(-1,1),
-            Arrays.asList(-2,2),
-            Arrays.asList(-3,3),
-            Arrays.asList(-4,4),
-            Arrays.asList(-5,5),
-            Arrays.asList(-6,6),
-            Arrays.asList(-7,7),
-            Arrays.asList(-1,-1),
-            Arrays.asList(-2,-2),
-            Arrays.asList(-3,-3),
-            Arrays.asList(-4,-4),
-            Arrays.asList(-5,-5),
-            Arrays.asList(-6,-6),
-            Arrays.asList(-7,-7)
-    );
+    public Pawn(int id, Color color, int widthPosition, int heightPosition, String logo) {
+        this.id = id;
+        this.color = color;
+        this.widthPosition = widthPosition;
+        this.heightPosition = heightPosition;
+        this.logo = logo;
+        this.figureMoves = figureMovesSender();
+    }
 
+    List<List<Integer>> figureMoves;
+
+    public List<List<Integer>> figureMovesSender(){
+        List<List<Integer>> figureMoves = null;
+        if (color.equals(Color.WHITE)){
+            figureMoves = Arrays.asList(Arrays.asList(0, 2),
+                    Arrays.asList(0,1),
+                    Arrays.asList(1,1),
+                    Arrays.asList(-1,1));
+
+        }
+        if (color.equals(Color.DARK)){
+            figureMoves = Arrays.asList(Arrays.asList(0, -2),
+                    Arrays.asList(0,-1),
+                    Arrays.asList(1,-1),
+                    Arrays.asList(-1,-1));
+
+        }
+            return figureMoves;
+    }
+
+    /**
+     * @param tails - tails minus tails with figures of the same color.
+     * @return List of tails where a figure can make a move
+     */
     public List<Tail> possibleMoves(List<Tail> tails) {
         List<Tail> possibleTalesForMove = new ArrayList<>();
         for (int i = 0; i < figureMoves.size(); i++) {
@@ -77,7 +78,11 @@ public class Bishop implements Figure {
             int newWidth = widthPosition + move.get(0);
             int newHeight = heightPosition + move.get(1);
             for (Tail tail : tails) {
-                if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight) {
+                if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight&&i==0&&tail.getFigure()==null) {
+                    possibleTalesForMove.add(tail);
+                    break;
+                }
+                else if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight&&i>0&&!(tail.getFigure()==null)){
                     possibleTalesForMove.add(tail);
                     break;
                 }
@@ -96,11 +101,5 @@ public class Bishop implements Figure {
         return Arrays.asList(widthPosition,heightPosition);
     }
 
-    public Bishop(int id, Color color, int widthPosition, int heightPosition, String logo) {
-        this.id = id;
-        this.color = color;
-        this.widthPosition = widthPosition;
-        this.heightPosition = heightPosition;
-        this.logo = logo;
-    }
+
 }

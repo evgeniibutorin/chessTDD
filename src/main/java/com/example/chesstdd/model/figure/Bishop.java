@@ -1,4 +1,4 @@
-package com.example.chesstdd.model.figure.dark;
+package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
 import com.example.chesstdd.model.Tail;
@@ -14,15 +14,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-@NoArgsConstructor
 @AllArgsConstructor
-public class King implements Figure {
+@NoArgsConstructor
+public class Bishop implements Figure {
 
     @Getter
     private int id;
 
     @Getter
-    Color color;
+    private Color color;
 
     @Getter
     @Setter
@@ -35,30 +35,43 @@ public class King implements Figure {
     @Getter
     private String logo;
 
-    @Getter
     @JsonIgnore
     private List<Tail> tailsToMove;
 
+    private final List<List<Integer>> figureMoves = Arrays.asList(
+            Arrays.asList(1, 1),
+            Arrays.asList(2, 2),
+            Arrays.asList(3, 3),
+            Arrays.asList(4, 4),
+            Arrays.asList(5, 5),
+            Arrays.asList(6, 6),
+            Arrays.asList(7, 7),
+            Arrays.asList(1, -1),
+            Arrays.asList(2, -2),
+            Arrays.asList(3, -3),
+            Arrays.asList(4, -4),
+            Arrays.asList(5, -5),
+            Arrays.asList(6, -6),
+            Arrays.asList(7, -7),
+            Arrays.asList(-1, 1),
+            Arrays.asList(-2, 2),
+            Arrays.asList(-3, 3),
+            Arrays.asList(-4, 4),
+            Arrays.asList(-5, 5),
+            Arrays.asList(-6, 6),
+            Arrays.asList(-7, 7),
+            Arrays.asList(-1, -1),
+            Arrays.asList(-2, -2),
+            Arrays.asList(-3, -3),
+            Arrays.asList(-4, -4),
+            Arrays.asList(-5, -5),
+            Arrays.asList(-6, -6),
+            Arrays.asList(-7, -7)
+    );
 
-    List<List<Integer>> figureMoves = Arrays.asList(
-            Arrays.asList(0,1),
-            Arrays.asList(1,0),
-            Arrays.asList(0,-1),
-            Arrays.asList(-1,0),
-            Arrays.asList(1,1),
-            Arrays.asList(1,-1),
-            Arrays.asList(-1,1),
-            Arrays.asList(-1,-1));
-
-
-    /**
-     * @param tails - tails minus tails with figures of the same color.
-     * @return List of tails where a figure can make a move
-     */
     public List<Tail> possibleMoves(List<Tail> tails) {
         List<Tail> possibleTalesForMove = new ArrayList<>();
-        for (int i = 0; i < figureMoves.size(); i++) {
-            List<Integer> move = figureMoves.get(i);
+        for (List<Integer> move : figureMoves) {
             int newWidth = widthPosition + move.get(0);
             int newHeight = heightPosition + move.get(1);
             for (Tail tail : tails) {
@@ -68,7 +81,7 @@ public class King implements Figure {
                 }
             }
         }
-        tailsToMove=possibleTalesForMove;
+        tailsToMove = possibleTalesForMove;
         return possibleTalesForMove;
     }
 
@@ -78,10 +91,10 @@ public class King implements Figure {
 
         int widthPosition = tail.getTailWidth();
         int heightPosition = tail.getTailHeight();
-        return Arrays.asList(widthPosition,heightPosition);
+        return Arrays.asList(widthPosition, heightPosition);
     }
 
-    public King(int id, Color color, int widthPosition, int heightPosition, String logo) {
+    public Bishop(int id, Color color, int widthPosition, int heightPosition, String logo) {
         this.id = id;
         this.color = color;
         this.widthPosition = widthPosition;
@@ -89,12 +102,3 @@ public class King implements Figure {
         this.logo = logo;
     }
 }
-
-
-
-
-
-
-
-
-

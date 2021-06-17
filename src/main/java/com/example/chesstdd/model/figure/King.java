@@ -1,4 +1,4 @@
-package com.example.chesstdd.model.figure.dark;
+package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
 import com.example.chesstdd.model.Tail;
@@ -16,7 +16,7 @@ import java.util.Random;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rook implements Figure {
+public class King implements Figure {
 
     @Getter
     private int id;
@@ -35,40 +35,20 @@ public class Rook implements Figure {
     @Getter
     private String logo;
 
-    @Getter
     @JsonIgnore
     private List<Tail> tailsToMove;
 
+
     List<List<Integer>> figureMoves = Arrays.asList(
             Arrays.asList(0,1),
-            Arrays.asList(0,2),
-            Arrays.asList(0,3),
-            Arrays.asList(0,4),
-            Arrays.asList(0,5),
-            Arrays.asList(0,6),
-            Arrays.asList(0,7),
+            Arrays.asList(1,0),
             Arrays.asList(0,-1),
-            Arrays.asList(0,-2),
-            Arrays.asList(0,-3),
-            Arrays.asList(0,-4),
-            Arrays.asList(0,-5),
-            Arrays.asList(0,-6),
-            Arrays.asList(0,-7),
             Arrays.asList(-1,0),
-            Arrays.asList(-2,0),
-            Arrays.asList(-3,0),
-            Arrays.asList(-4,0),
-            Arrays.asList(-5,0),
-            Arrays.asList(-6,0),
-            Arrays.asList(-7,0),
-            Arrays.asList(-1,0),
-            Arrays.asList(-2,0),
-            Arrays.asList(-3,0),
-            Arrays.asList(-4,0),
-            Arrays.asList(-5,0),
-            Arrays.asList(-6,0),
-            Arrays.asList(-7,0)
-    );
+            Arrays.asList(1,1),
+            Arrays.asList(1,-1),
+            Arrays.asList(-1,1),
+            Arrays.asList(-1,-1));
+
 
     /**
      * @param tails - tails minus tails with figures of the same color.
@@ -100,7 +80,7 @@ public class Rook implements Figure {
         return Arrays.asList(widthPosition,heightPosition);
     }
 
-    public Rook(int id, Color color, int widthPosition, int heightPosition, String logo) {
+    public King(int id, Color color, int widthPosition, int heightPosition, String logo) {
         this.id = id;
         this.color = color;
         this.widthPosition = widthPosition;
@@ -108,3 +88,12 @@ public class Rook implements Figure {
         this.logo = logo;
     }
 }
+
+
+
+
+
+
+
+
+

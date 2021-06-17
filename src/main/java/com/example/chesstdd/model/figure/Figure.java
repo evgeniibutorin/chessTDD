@@ -13,8 +13,7 @@ public interface Figure {
     int getWidthPosition();
     void setWidthPosition(int i);
     List<Tail> possibleMoves(List<Tail> tails);
+
+    //todo вынести в отдельный класс координаты, настроить сравнение
     List<Integer> coordinateForTheMove();
-    List<Tail> getTailsToMove();
-
-
 }

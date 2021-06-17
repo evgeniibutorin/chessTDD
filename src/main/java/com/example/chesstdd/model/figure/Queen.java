@@ -1,4 +1,4 @@
-package com.example.chesstdd.model.figure.dark;
+package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
 import com.example.chesstdd.model.Tail;
@@ -34,7 +34,6 @@ public class Queen implements Figure {
     @Getter
     private String logo;
 
-    @Getter
     @JsonIgnore
     private List<Tail> tailsToMove;
 

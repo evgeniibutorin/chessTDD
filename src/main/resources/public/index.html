@@ -10,9 +10,6 @@
       $.get("http://localhost:9090/make_move", function (responseJson) {
         $.each(responseJson, function (index, tail) {
           $("#" + tail.id).html(!!tail.figure ? tail.figure.logo : '');
-          // let tl = document.getElementById(tail.id.toString());
-          // tl.innerHTML ="";
-          // tl.innerHTML = tail.figure.logo;
         });
       });
     })
@@ -23,10 +20,6 @@
       $.get("http://localhost:9090/restart_game", function (responseJson) {
         $.each(responseJson, function (index, tail) {
           $("#" + tail.id).html(!!tail.figure ? tail.figure.logo : '');
-          // let tl = document.getElementById(tail.id);
-          // tl.innerHTML ="";
-          // tl.innerHTML = tail.figure.logo;
-          // let tl = document.getElementById(tail.id.toString());
         });
       });
     })
