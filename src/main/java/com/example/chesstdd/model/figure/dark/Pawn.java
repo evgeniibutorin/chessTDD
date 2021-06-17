@@ -79,7 +79,11 @@ public class Pawn implements Figure {
             int newWidth = widthPosition + move.get(0);
             int newHeight = heightPosition + move.get(1);
             for (Tail tail : tails) {
-                if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight) {
+                if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight&&i==0&&tail.getFigure()==null) {
+                    possibleTalesForMove.add(tail);
+                    break;
+                }
+                else if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight&&i>0&&!(tail.getFigure()==null)){
                     possibleTalesForMove.add(tail);
                     break;
                 }
