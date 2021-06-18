@@ -182,6 +182,7 @@ public class ChessService {
         List<Integer> goalCoordinate = randomFigure.coordinateForTheMove();
 
         //Находим в списке игровых клеток клетку, куда доложен быть сделан ход.
+        //todo:  в отдельный метод цикл for
         for (Tail tail : allTails) {
             if (tail.getTailWidth() == goalCoordinate.get(0) && tail.getTailHeight() == goalCoordinate.get(1)) {
                 //Получаем значение фигуры которое есть в выбранной для хода клетке
@@ -202,6 +203,7 @@ public class ChessService {
 
     private void removeFigureFromOldTail(Figures randomFigure) {
         for (Tail tail : allTails) {
+            //todo: вынести координаты в отдельный класс
             if (tail.getTailWidth() == randomFigure.getWidthPosition() && tail.getTailHeight() == randomFigure.getHeightPosition()) {
                 tail.setFigure(null);
             }

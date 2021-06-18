@@ -23,7 +23,8 @@ public class ChessController {
 
     @GetMapping("restart_game")
     public List<Tail> startGame() {
-        return chessService.restartGame();
+        List<Tail> tails = chessService.restartGame();
+        return tails;
     }
 
 }

@@ -1,15 +1,16 @@
 package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Queen extends Figures {
-
+    @JsonIgnore
     @Getter
-    List<List<Integer>> figureMoves = Arrays.asList(
+    final List<List<Integer>> figureMoves = Arrays.asList(
             Arrays.asList(1, 1),
             Arrays.asList(2, 2),
             Arrays.asList(3, 3),

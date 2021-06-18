@@ -12,23 +12,23 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class Figures {
-
+    @JsonIgnore
     @Getter
-    private int id;
-
+    private final int id;
+    @JsonIgnore
     @Getter
-    private Color color;
-
+    private final Color color;
+    @JsonIgnore
     @Getter
     @Setter
     private int widthPosition;
-
+    @JsonIgnore
     @Getter
     @Setter
     private int heightPosition;
 
     @Getter
-    private String logo;
+    private final String logo;
 
     @JsonIgnore
     @Getter
@@ -57,7 +57,6 @@ public abstract class Figures {
     public List<Integer> coordinateForTheMove() {
         Random random = new Random();
         Tail tail = getTailsToMove().get(random.nextInt(getTailsToMove().size()));
-
         int widthPosition = tail.getTailWidth();
         int heightPosition = tail.getTailHeight();
         return Arrays.asList(widthPosition, heightPosition);

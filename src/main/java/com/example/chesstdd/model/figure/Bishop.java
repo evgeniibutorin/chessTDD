@@ -1,6 +1,7 @@
 package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -11,9 +12,9 @@ public class Bishop extends Figures {
     public Bishop(int id, Color color, int widthPosition, int heightPosition, String logo) {
         super(id, color, widthPosition, heightPosition, logo);
     }
-
+    @JsonIgnore
     @Getter
-    List<List<Integer>> figureMoves = Arrays.asList(
+    final List<List<Integer>> figureMoves = Arrays.asList(
             Arrays.asList(1, 1),
             Arrays.asList(2, 2),
             Arrays.asList(3, 3),
