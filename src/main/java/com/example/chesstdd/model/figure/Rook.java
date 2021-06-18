@@ -6,10 +6,9 @@ import lombok.Getter;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class Rook extends Figures {
 
-//    @Getter
+    @Getter
     List<List<Integer>> figureMoves = Arrays.asList(
             Arrays.asList(0, 1),
             Arrays.asList(0, 2),
@@ -45,8 +44,4 @@ public class Rook extends Figures {
         super(id, color, widthPosition, heightPosition, logo);
     }
 
-    @Override
-    public List<List<Integer>> getFigureMoves() {
-        return figureMoves;
-    }
 }

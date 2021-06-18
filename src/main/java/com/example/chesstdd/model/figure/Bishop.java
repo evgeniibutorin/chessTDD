@@ -1,6 +1,7 @@
 package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +12,7 @@ public class Bishop extends Figures {
         super(id, color, widthPosition, heightPosition, logo);
     }
 
-
+    @Getter
     List<List<Integer>> figureMoves = Arrays.asList(
             Arrays.asList(1, 1),
             Arrays.asList(2, 2),
@@ -42,10 +43,4 @@ public class Bishop extends Figures {
             Arrays.asList(-6, -6),
             Arrays.asList(-7, -7)
     );
-
-    @Override
-    public List<List<Integer>> getFigureMoves() {
-        return figureMoves;
-    }
-
 }

@@ -13,9 +13,11 @@ public class Tail {
 
     @Getter
     int id;
+
     @Getter
     @Setter
     private int tailWidth;
+
     @Getter
     @Setter
     private int tailHeight;

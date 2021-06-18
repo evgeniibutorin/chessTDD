@@ -30,7 +30,6 @@ public class ChessService {
         List<Tail> board = new ArrayList<>();
         for (int i = 0; i < 64; i++) {
             Figures figures = null;
-            //падает на 47 потому что в списке нет элемента с таким номером нужно искать по id
             if (i < 16 || i > 47) {
                 for (Figures f : allFigures) {
                     if (f.getId() == i) {
@@ -132,7 +131,7 @@ public class ChessService {
         return tailsWithoutCurrentColorFigures;
     }
 
-    public List<Figures> getCurrentColorFigures(List<Figures> figures, Color color){
+    public List<Figures> getCurrentColorFigures(List<Figures> figures, Color color) {
         List<Figures> currentColorFigures = new ArrayList<>();
         for (Figures figure : figures) {
             if (color.equals(figure.getColor())) {
@@ -215,7 +214,6 @@ public class ChessService {
         allTails.clear();
         allTails = setCoordinate(tailIdAndFigureIdCreator());
         turnToMove.setFigureTurn();
-
         return allTails;
     }
 
