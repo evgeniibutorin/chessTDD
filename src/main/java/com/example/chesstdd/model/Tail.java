@@ -14,14 +14,11 @@ public class Tail {
 
     @Getter
     int id;
-    @JsonIgnore
+
     @Getter
     @Setter
-    private int tailWidth;
     @JsonIgnore
-    @Getter
-    @Setter
-    private int tailHeight;
+    Coordinates coordinates;
 
     @Getter
     @Setter

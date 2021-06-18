@@ -1,6 +1,7 @@
 package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
+import com.example.chesstdd.model.Coordinates;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
@@ -10,39 +11,39 @@ import java.util.List;
 public class Rook extends Figures {
     @JsonIgnore
     @Getter
-    final List<List<Integer>> figureMoves = Arrays.asList(
-            Arrays.asList(0, 1),
-            Arrays.asList(0, 2),
-            Arrays.asList(0, 3),
-            Arrays.asList(0, 4),
-            Arrays.asList(0, 5),
-            Arrays.asList(0, 6),
-            Arrays.asList(0, 7),
-            Arrays.asList(0, -1),
-            Arrays.asList(0, -2),
-            Arrays.asList(0, -3),
-            Arrays.asList(0, -4),
-            Arrays.asList(0, -5),
-            Arrays.asList(0, -6),
-            Arrays.asList(0, -7),
-            Arrays.asList(-1, 0),
-            Arrays.asList(-2, 0),
-            Arrays.asList(-3, 0),
-            Arrays.asList(-4, 0),
-            Arrays.asList(-5, 0),
-            Arrays.asList(-6, 0),
-            Arrays.asList(-7, 0),
-            Arrays.asList(-1, 0),
-            Arrays.asList(-2, 0),
-            Arrays.asList(-3, 0),
-            Arrays.asList(-4, 0),
-            Arrays.asList(-5, 0),
-            Arrays.asList(-6, 0),
-            Arrays.asList(-7, 0)
+    final List<Coordinates> figureMoves = Arrays.asList(
+            new Coordinates(0, 1),
+            new Coordinates(0, 2),
+            new Coordinates(0, 3),
+            new Coordinates(0, 4),
+            new Coordinates(0, 5),
+            new Coordinates(0, 6),
+            new Coordinates(0, 7),
+            new Coordinates(0, -1),
+            new Coordinates(0, -2),
+            new Coordinates(0, -3),
+            new Coordinates(0, -4),
+            new Coordinates(0, -5),
+            new Coordinates(0, -6),
+            new Coordinates(0, -7),
+            new Coordinates(-1, 0),
+            new Coordinates(-2, 0),
+            new Coordinates(-3, 0),
+            new Coordinates(-4, 0),
+            new Coordinates(-5, 0),
+            new Coordinates(-6, 0),
+            new Coordinates(-7, 0),
+            new Coordinates(-1, 0),
+            new Coordinates(-2, 0),
+            new Coordinates(-3, 0),
+            new Coordinates(-4, 0),
+            new Coordinates(-5, 0),
+            new Coordinates(-6, 0),
+            new Coordinates(-7, 0)
     );
 
-    public Rook(int id, Color color, int widthPosition, int heightPosition, String logo) {
-        super(id, color, widthPosition, heightPosition, logo);
+    public Rook(int id, Color color, Coordinates coordinates, String logo) {
+        super(id, color, coordinates, logo);
     }
 
 }

@@ -1,13 +1,13 @@
 package com.example.chesstdd.model.figure;
 
 import com.example.chesstdd.model.Color;
+import com.example.chesstdd.model.Coordinates;
 import com.example.chesstdd.model.Tail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -18,14 +18,11 @@ public abstract class Figures {
     @JsonIgnore
     @Getter
     private final Color color;
-    @JsonIgnore
+
     @Getter
     @Setter
-    private int widthPosition;
     @JsonIgnore
-    @Getter
-    @Setter
-    private int heightPosition;
+    private Coordinates coordinates;
 
     @Getter
     private final String logo;
@@ -35,16 +32,17 @@ public abstract class Figures {
     @Setter
     private List<Tail> tailsToMove;
 
-    public abstract List<List<Integer>> getFigureMoves();
+    public abstract List<Coordinates> getFigureMoves();
 
     public List<Tail> possibleMoves(List<Tail> tails) {
         List<Tail> possibleTalesForMove = new ArrayList<>();
-        List<List<Integer>> moves = getFigureMoves();
-        for (List<Integer> move : moves) {
-            int newWidth = widthPosition + move.get(0);
-            int newHeight = heightPosition + move.get(1);
+        List<Coordinates> moves = getFigureMoves();
+        for (Coordinates move : moves) {
+            Coordinates newCoordinates = new Coordinates(
+                    coordinates.getWidthPosition() + move.getWidthPosition(),
+                    coordinates.getHeightPosition() + move.getHeightPosition());
             for (Tail tail : tails) {
-                if (tail.getTailWidth() == newWidth && tail.getTailHeight() == newHeight) {
+                if (tail.getCoordinates().equals(newCoordinates)) {
                     possibleTalesForMove.add(tail);
                     break;
                 }
@@ -54,19 +52,15 @@ public abstract class Figures {
         return possibleTalesForMove;
     }
 
-    public List<Integer> coordinateForTheMove() {
+    public Coordinates coordinateForTheMove() {
         Random random = new Random();
-        Tail tail = getTailsToMove().get(random.nextInt(getTailsToMove().size()));
-        int widthPosition = tail.getTailWidth();
-        int heightPosition = tail.getTailHeight();
-        return Arrays.asList(widthPosition, heightPosition);
+        return getTailsToMove().get(random.nextInt(getTailsToMove().size())).getCoordinates();
     }
 
-    public Figures(int id, Color color, int widthPosition, int heightPosition, String logo) {
+    public Figures(int id, Color color, Coordinates coordinates, String logo) {
         this.id = id;
         this.color = color;
-        this.widthPosition = widthPosition;
-        this.heightPosition = heightPosition;
+        this.coordinates = coordinates;
         this.logo = logo;
     }
 
