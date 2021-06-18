@@ -1,7 +1,7 @@
 package com.example.chesstdd.model;
 
 
-import com.example.chesstdd.model.figure.Figure;
+import com.example.chesstdd.model.figure.Figures;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +22,9 @@ public class Tail {
 
     @Getter
     @Setter
-    Figure figure;
+    Figures figure;
 
-    public Tail(int id, Figure figure) {
+    public Tail(int id, Figures figure) {
         this.id = id;
         this.figure = figure;
     }

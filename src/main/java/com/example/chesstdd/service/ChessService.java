@@ -19,7 +19,7 @@ public class ChessService {
 
     private Turn turnToMove;
 
-    private List<Figure> allFigures = createFigure();
+    private List<Figures> allFigures = createFigure();
     private List<Tail> allTails = setCoordinate(tailIdAndFigureIdCreator());
 
     public ChessService(Turn turnToMove) {
@@ -29,19 +29,19 @@ public class ChessService {
     public List<Tail> tailIdAndFigureIdCreator() {
         List<Tail> board = new ArrayList<>();
         for (int i = 0; i < 64; i++) {
-            Figure figure = null;
+            Figures figures = null;
             //падает на 47 потому что в списке нет элемента с таким номером нужно искать по id
             if (i < 16 || i > 47) {
-                for (Figure f : allFigures) {
+                for (Figures f : allFigures) {
                     if (f.getId() == i) {
-                        figure = f;
+                        figures = f;
                         break;
                     }
                 }
             } else {
-                figure = null;
+                figures = null;
             }
-            board.add(new Tail(i, figure));
+            board.add(new Tail(i, figures));
         }
         return board;
     }
@@ -86,8 +86,8 @@ public class ChessService {
         return supplementedTileList;
     }
 
-    public List<Figure> createFigure() {
-        List<Figure> board = new ArrayList<>();
+    public List<Figures> createFigure() {
+        List<Figures> board = new ArrayList<>();
         board.add(new Rook(0, WHITE, 0, 0, "♖"));
         board.add(new Knight(1, WHITE, 1, 0, "♘"));
         board.add(new Bishop(2, WHITE, 2, 0, "♗"));
@@ -122,7 +122,7 @@ public class ChessService {
      * @param currentColorFigures все фигуры в игре текущего цвета
      * @return
      */
-    public List<Tail> getTailsWithoutCurrentColorFigure(List<Tail> tailsWithAllFigures, List<Figure> currentColorFigures) {
+    public List<Tail> getTailsWithoutCurrentColorFigure(List<Tail> tailsWithAllFigures, List<Figures> currentColorFigures) {
         List<Tail> tailsWithoutCurrentColorFigures = new ArrayList<>();
         for (Tail tail : tailsWithAllFigures) {
             if (tail.getFigure() == null || !currentColorFigures.contains(tail.getFigure())) {
@@ -132,9 +132,9 @@ public class ChessService {
         return tailsWithoutCurrentColorFigures;
     }
 
-    public List<Figure> getCurrentColorFigures(List<Figure> figures, Color color){
-        List<Figure> currentColorFigures = new ArrayList<>();
-        for (Figure figure : figures) {
+    public List<Figures> getCurrentColorFigures(List<Figures> figures, Color color){
+        List<Figures> currentColorFigures = new ArrayList<>();
+        for (Figures figure : figures) {
             if (color.equals(figure.getColor())) {
                 currentColorFigures.add(figure);
             }
@@ -146,11 +146,11 @@ public class ChessService {
      * @param figures список всех фигур в игре текущего цвета
      * @return List of figures one color that can move.
      */
-    public List<Figure> canMoveFigures(List<Figure> figures) {
-        List<Figure> canMove = new ArrayList<>();
+    public List<Figures> canMoveFigures(List<Figures> figures) {
+        List<Figures> canMove = new ArrayList<>();
         List<Tail> tailsToCheck = getTailsWithoutCurrentColorFigure(allTails, figures);
 
-        for (Figure figure : figures) {
+        for (Figures figure : figures) {
             if (!figure.possibleMoves(tailsToCheck).isEmpty()) {
                 canMove.add(figure);
             }
@@ -162,7 +162,7 @@ public class ChessService {
      * @param listFiguresThatCanMove result canMoveFigures()
      * @return random figure
      */
-    public Figure getRandomFigure(List<Figure> listFiguresThatCanMove) {
+    public Figures getRandomFigure(List<Figures> listFiguresThatCanMove) {
         Random random = new Random();
         return listFiguresThatCanMove.get(random.nextInt(listFiguresThatCanMove.size()));
     }
@@ -172,9 +172,9 @@ public class ChessService {
      * @return List of tiles to be sent from the controller
      */
     public List<Tail> move() {
-        List<Figure> figureWithOneColor = getCurrentColorFigures(allFigures, turnToMove.toggleAndGet());
+        List<Figures> figureWithOneColor = getCurrentColorFigures(allFigures, turnToMove.toggleAndGet());
         //random piece from among those who can move on their turn
-        Figure randomFigure = getRandomFigure(canMoveFigures(figureWithOneColor));
+        Figures randomFigure = getRandomFigure(canMoveFigures(figureWithOneColor));
 
         //убираем из списка клеток фигуру
         removeFigureFromOldTail(randomFigure);
@@ -186,7 +186,7 @@ public class ChessService {
         for (Tail tail : allTails) {
             if (tail.getTailWidth() == goalCoordinate.get(0) && tail.getTailHeight() == goalCoordinate.get(1)) {
                 //Получаем значение фигуры которое есть в выбранной для хода клетке
-                Figure oldFigure = tail.getFigure();
+                Figures oldFigure = tail.getFigure();
                 //Если в клетке есть фигура то устанавливаем значение фигуры в клетке null, находим фигуру в списке играющих фигур и удаляем ее.
                 if (oldFigure != null) {
                     tail.setFigure(null);
@@ -201,7 +201,7 @@ public class ChessService {
         return allTails;
     }
 
-    private void removeFigureFromOldTail(Figure randomFigure) {
+    private void removeFigureFromOldTail(Figures randomFigure) {
         for (Tail tail : allTails) {
             if (tail.getTailWidth() == randomFigure.getWidthPosition() && tail.getTailHeight() == randomFigure.getHeightPosition()) {
                 tail.setFigure(null);
@@ -214,7 +214,6 @@ public class ChessService {
         allFigures = createFigure();
         allTails.clear();
         allTails = setCoordinate(tailIdAndFigureIdCreator());
-//        tern = 0;
         turnToMove.setFigureTurn();
 
         return allTails;

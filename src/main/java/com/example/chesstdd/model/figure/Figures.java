@@ -37,37 +37,6 @@ public abstract class Figures {
 
     public abstract List<List<Integer>> getFigureMoves();
 
-    private List<List<Integer>> figureMoves = Arrays.asList(
-            Arrays.asList(1, 1),
-            Arrays.asList(2, 2),
-            Arrays.asList(3, 3),
-            Arrays.asList(4, 4),
-            Arrays.asList(5, 5),
-            Arrays.asList(6, 6),
-            Arrays.asList(7, 7),
-            Arrays.asList(1, -1),
-            Arrays.asList(2, -2),
-            Arrays.asList(3, -3),
-            Arrays.asList(4, -4),
-            Arrays.asList(5, -5),
-            Arrays.asList(6, -6),
-            Arrays.asList(7, -7),
-            Arrays.asList(-1, 1),
-            Arrays.asList(-2, 2),
-            Arrays.asList(-3, 3),
-            Arrays.asList(-4, 4),
-            Arrays.asList(-5, 5),
-            Arrays.asList(-6, 6),
-            Arrays.asList(-7, 7),
-            Arrays.asList(-1, -1),
-            Arrays.asList(-2, -2),
-            Arrays.asList(-3, -3),
-            Arrays.asList(-4, -4),
-            Arrays.asList(-5, -5),
-            Arrays.asList(-6, -6),
-            Arrays.asList(-7, -7)
-    );
-
     public List<Tail> possibleMoves(List<Tail> tails) {
         List<Tail> possibleTalesForMove = new ArrayList<>();
         List<List<Integer>> moves = getFigureMoves();
