@@ -29,8 +29,7 @@ public class Pawn extends Figures {
                     new Coordinates(1, 1),
                     new Coordinates(-1, 1));
 
-        }
-        if (super.getColor().equals(Color.DARK)) {
+        } else if (super.getColor().equals(Color.DARK)) {
             figureMoves = Arrays.asList(
                     new Coordinates(0, -2),
                     new Coordinates(0, -1),
@@ -49,30 +48,25 @@ public class Pawn extends Figures {
     @Override
     public List<Tail> possibleMoves(List<Tail> tails) {
         List<Tail> possibleTalesForMove = new ArrayList<>();
-        for (int i = 0; i < figureMoves.size(); i++) {
-            Coordinates moveCoordinates = figureMoves.get(i);
-//            List<Integer> move = figureMoves.get(i);
-            Coordinates coordinates = new Coordinates();
-            coordinates.setWidthPosition(coordinates.getWidthPosition()+moveCoordinates.getWidthPosition());
-            coordinates.setHeightPosition(coordinates.getHeightPosition()+moveCoordinates.getHeightPosition());
-//            int newWidth = widthPosition + move.get(0);
-//            int newHeight = heightPosition + move.get(1);
+        List<Coordinates> moves = getFigureMoves();
+        for (int i = 0; i < moves.size(); i++) {
+            Coordinates move = moves.get(i);
+            Coordinates newCoordinates = new Coordinates(
+                    super.getCoordinates().getWidthPosition() + move.getWidthPosition(),
+                    super.getCoordinates().getHeightPosition() + move.getHeightPosition());
             for (Tail tail : tails) {
-                if (tail.getCoordinates().equals(coordinates))
-                if (tail.getCoordinates().equals(coordinates)&&i==0&&tail.getFigure()==null) {
+                if (tail.getCoordinates().equals(newCoordinates) && i == 0 && tail.getFigure() == null) {
                     possibleTalesForMove.add(tail);
                     break;
-                }
-                else if (tail.getCoordinates().equals(coordinates)&&i>0&&!(tail.getFigure()==null)){
+                } else if (tail.getCoordinates().equals(newCoordinates) && !(tail.getFigure() == null) && i > 0 && !(tail.getFigure() == null)) {
                     possibleTalesForMove.add(tail);
                     break;
                 }
             }
         }
-        super.setTailsToMove(possibleTalesForMove);
+        setTailsToMove(possibleTalesForMove);
         return possibleTalesForMove;
     }
-
 
 
 }
